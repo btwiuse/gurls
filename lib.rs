@@ -1,9 +1,3 @@
-#[no_mangle]
-pub extern "C" fn init() {}
-
-#[no_mangle]
-pub extern "C" fn handle() {}
-
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
