@@ -1,0 +1,17 @@
+[package]
+name = "gurls"
+version = "0.0.0"
+edition = "2021"
+description = "Gear URL Shortener (GURLS)"
+license = "MIT"
+
+[lib]
+name = "gurls"
+path = "lib.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[build-dependencies]
+gasm = "0.0.1"
