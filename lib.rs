@@ -1,95 +1,92 @@
 #![feature(map_try_insert)]
-#![feature(trait_alias)]
 #![no_std]
 
 use gstd::prelude::*;
 
-pub mod contract {
-    use super::{BTreeMap, Default, String};
+mod contract {
+    use crate::*;
 
     #[derive(Default)]
-    pub struct Contract {
-        pub urls: BTreeMap<String, String>,
-    }
+    pub struct Contract(BTreeMap<String, String>);
 
     impl Contract {
-        pub fn set_url(&mut self, key: String, value: String) {
-            self.urls
-                .try_insert(key, value)
-                .expect("failed to insert: key already exists");
+        pub fn add_url(&mut self, code: String, url: String) {
+            self.0
+                .try_insert(code, url)
+                .expect("failed to insert: code exists");
         }
-
-        pub fn get_url(&self, key: String) -> Option<String> {
-            self.urls.get(&key).cloned()
+        pub fn get_url(&self, code: String) -> Option<String> {
+            self.0.get(&code).cloned()
         }
     }
 }
+use contract::Contract;
 
-mod state {
-    use super::contract::Contract;
-
-    pub static mut STATE: Option<Contract> = None;
-}
-
-pub mod codec {
-    use super::String;
-
+mod codec {
+    use crate::*;
     use parity_scale_codec::{Decode, Encode};
     use scale_info::TypeInfo;
 
-    #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
-    pub enum Action {
-        SetUrl(String, String),
+    pub mod action {
+        use super::*;
+        #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
+        pub enum Action {
+            AddUrl { code: String, url: String },
+        }
+
+        #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
+        pub enum Event {
+            Added { code: String, url: String },
+        }
     }
 
-    #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
-    pub enum Event {
-        SetUrl(String, String),
-    }
+    pub mod query {
+        use super::*;
+        #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
+        pub enum Query {
+            Code(String),
+        }
 
-    #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
-    pub enum Query {
-        GetUrl(String),
-    }
-
-    #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
-    pub enum State {
-        Url(Option<String>),
+        #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
+        pub enum State {
+            MaybeUrl(Option<String>),
+        }
     }
 }
+use codec::{
+    action::{Action, Event},
+    query::{Query, State},
+};
+
+pub static mut STATE: Option<Contract> = None;
 
 #[no_mangle]
 pub unsafe extern "C" fn init() {
-    state::STATE = Some(contract::Contract::default());
+    STATE = Some(Contract::default());
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn handle() {
-    let state = state::STATE.as_mut().expect("failed to get state as mut");
-    let action: codec::Action = gstd::msg::load().expect("failed to load action");
+    let state = STATE.as_mut().expect("failed to get state as mut");
+    let action: Action = gstd::msg::load().expect("failed to load action");
     match action {
-        codec::Action::SetUrl(key, value) => {
-            state.set_url(key.clone(), value.clone());
-            gstd::msg::reply(codec::Event::SetUrl(key, value), 0).expect("failed to set url");
+        Action::AddUrl { code, url } => {
+            state.add_url(code.clone(), url.clone());
+            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to add url");
         }
     }
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
-    let state = state::STATE.as_ref().expect("failed to get contract state");
+    let state = STATE.as_ref().expect("failed to get contract state");
     let query: Query = gstd::msg::load().expect("failed to decode input argument");
-    let encoded = match query {
-        Query::GetUrl(key) => {
-            let value = state.get_url(key);
-            State::Url(value)
-        }
-    }
-    .encode();
-    gstd::util::to_leak_ptr(encoded)
+    let result = match query {
+        Query::Code(code) => State::MaybeUrl(state.get_url(code)),
+    };
+    gstd::util::to_leak_ptr(result.encode())
 }
 
-use codec::*;
 gstd::metadata! {
     title: "GURLS",
     handle:
