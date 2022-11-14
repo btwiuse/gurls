@@ -22,7 +22,7 @@ mod contract {
         pub fn add_url(&mut self, code: String, url: String) {
             self.0
                 .try_insert(code, url)
-                .expect("failed to insert: code exists");
+                .expect("failed to add url: code exists");
         }
         pub fn get_url(&self, code: String) -> Option<String> {
             self.0.get(&code).cloned()
@@ -504,14 +504,14 @@ unsafe extern "C" fn handle() {
     match action {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
-            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to add url");
+            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
         }
     }
 }
 #[no_mangle]
 unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
     let state = STATE.as_ref().expect("failed to get contract state");
-    let query: Query = gstd::msg::load().expect("failed to decode input argument");
+    let query: Query = gstd::msg::load().expect("failed to load query");
     let result = match query {
         Query::Code(code) => State::MaybeUrl(state.get_url(code)),
     };
@@ -519,7 +519,7 @@ unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
 }
 #[no_mangle]
 unsafe extern "C" fn meta_title() -> *mut [i32; 2] {
-    let buffer = "GURLS".to_string();
+    let buffer = "github.com/btwiuse/gurls".to_string();
     let result = ::gstd::util::to_wasm_ptr(buffer.as_bytes());
     core::mem::forget(buffer);
     result

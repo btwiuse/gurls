@@ -13,7 +13,7 @@ mod contract {
         pub fn add_url(&mut self, code: String, url: String) {
             self.0
                 .try_insert(code, url)
-                .expect("failed to insert: code exists");
+                .expect("failed to add url: code exists");
         }
         pub fn get_url(&self, code: String) -> Option<String> {
             self.0.get(&code).cloned()
@@ -80,7 +80,7 @@ unsafe extern "C" fn handle() {
 #[no_mangle]
 unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
     let state = STATE.as_ref().expect("failed to get contract state");
-    let query: Query = gstd::msg::load().expect("failed to decode input argument");
+    let query: Query = gstd::msg::load().expect("failed to load query");
     let result = match query {
         Query::Code(code) => State::MaybeUrl(state.get_url(code)),
     };
@@ -88,7 +88,7 @@ unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
 }
 
 gstd::metadata! {
-    title: "GURLS",
+    title: "github.com/btwiuse/gurls",
     handle:
         input: Action,
         output: Event,
