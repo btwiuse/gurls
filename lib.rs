@@ -58,27 +58,27 @@ use codec::{
     query::{Query, State},
 };
 
-pub static mut STATE: Option<Contract> = None;
+static mut STATE: Option<Contract> = None;
 
 #[no_mangle]
-pub unsafe extern "C" fn init() {
+unsafe extern "C" fn init() {
     STATE = Some(Contract::default());
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn handle() {
+unsafe extern "C" fn handle() {
     let state = STATE.as_mut().expect("failed to get state as mut");
     let action: Action = gstd::msg::load().expect("failed to load action");
     match action {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
-            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to add url");
+            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
         }
     }
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
+unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
     let state = STATE.as_ref().expect("failed to get contract state");
     let query: Query = gstd::msg::load().expect("failed to decode input argument");
     let result = match query {
