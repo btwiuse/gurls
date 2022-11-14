@@ -72,7 +72,7 @@ pub mod contract {
 
     impl<T: traits::IConfig> traits::GURLS<T> for Contract<T> {
         fn set_url(&mut self, key: T::Text, value: T::Text) {
-            self.urls.try_insert(key, value).unwrap();
+            self.urls.try_insert(key, value).expect("failed to insert: key already exists");
         }
 
         fn get_url(&self, key: T::Text) -> Option<T::Text> {
@@ -132,6 +132,12 @@ pub mod codec {
     use scale_info::TypeInfo;
 
     #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
+    pub struct Init;
+
+    #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
+    pub struct InitOk;
+
+    #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
     pub enum Action {
         SetUrl(String, String),
     }
@@ -152,9 +158,25 @@ pub mod codec {
     }
 }
 
+use codec::*;
+gstd::metadata! {
+    title: "GURLS",
+    init:
+        input: Init,
+        output: InitOk,
+    handle:
+        input: Action,
+        output: Event,
+    state:
+        input: Query,
+        output: State,
+}
+
 #[no_mangle]
 pub unsafe extern "C" fn init() {
+    let _: codec::Init = gstd::msg::load().expect("failed to load Init message");
     state::STATE = Some(contract::Contract::<config::GearConfig>::new());
+    gstd::msg::reply(codec::InitOk, 0).expect("failed to reply InitOk");
 }
 
 #[no_mangle]
@@ -170,12 +192,16 @@ pub unsafe extern "C" fn handle() {
     }
 }
 
-gstd::metadata! {
-    title: "GURLS",
-    handle:
-        input: codec::Action,
-        output: codec::Event,
-    state:
-        input: codec::Query,
-        output: codec::State,
+#[no_mangle]
+pub unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
+    use traits::GURLS;
+    let query: Query = gstd::msg::load().expect("failed to decode input argument");
+    let state = state::STATE.as_ref().expect("failed to get contract state");
+    let encoded = match query {
+        Query::GetUrl(key) => {
+            let value = state.get_url(key);
+            State::Url(value)
+        }
+    }.encode();
+    gstd::util::to_leak_ptr(encoded)
 }
