@@ -1,14 +1,181 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+#![feature(map_try_insert)]
+#![feature(trait_alias)]
+#![no_std]
 
-#[cfg(test)]
-mod tests {
+use gstd::prelude::*;
+
+pub mod traits {
     use super::*;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    pub trait IText = From<&'static str>
+        + Clone
+        + fmt::Debug
+        + fmt::Display
+        + Default
+        + hash::Hash
+        + PartialEq
+        + Eq
+        + PartialOrd
+        + Ord
+        + AsRef<str>
+        + AsMut<str>;
+
+    pub trait IBalance = num_traits::Zero
+        + num_traits::One
+        + num_traits::CheckedAdd
+        + num_traits::CheckedSub
+        + num_traits::SaturatingAdd
+        + num_traits::SaturatingSub
+        + num_traits::sign::Unsigned
+        + fmt::Debug
+        + Copy
+        + Clone
+        + PartialOrd
+        + PartialEq
+        + Default
+        + From<u32>
+        + From<u16>;
+
+    pub trait IAccountId = Eq + Copy + Clone + core::hash::Hash + Ord + fmt::Debug + Default;
+
+    pub trait ITokenId = Eq + Copy + Clone + core::hash::Hash + Ord + fmt::Debug + Default;
+
+    pub trait IConfig: Default {
+        type Balance: IBalance;
+        type AccountId: IAccountId;
+        type TokenId: ITokenId;
+        type Text: IText;
+        fn origin(&self) -> Self::AccountId;
+        fn sender(&self) -> Self::AccountId;
     }
+
+    pub trait GURLS<T: IConfig> {
+        fn set_url(&mut self, key: T::Text, value: T::Text);
+        fn get_url(&self, key: T::Text) -> Option<T::Text>;
+    }
+}
+
+pub mod contract {
+    use super::*;
+
+    #[derive(Default)]
+    pub struct Contract<T: traits::IConfig> {
+        pub ctx: T,
+        pub urls: BTreeMap<T::Text, T::Text>,
+    }
+
+    impl<T: traits::IConfig> Contract<T> {
+        pub fn new() -> Self {
+            Self::default()
+        }
+    }
+
+    impl<T: traits::IConfig> traits::GURLS<T> for Contract<T> {
+        fn set_url(&mut self, key: T::Text, value: T::Text) {
+            self.urls.try_insert(key, value).unwrap();
+        }
+
+        fn get_url(&self, key: T::Text) -> Option<T::Text> {
+            self.urls.get(&key).cloned()
+        }
+    }
+}
+
+mod config {
+    use super::*;
+
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+    pub struct MockConfig {
+        pub origin: u32,
+        pub sender: u32,
+    }
+
+    impl traits::IConfig for MockConfig {
+        type Balance = u32;
+        type AccountId = u32;
+        type TokenId = u32;
+        type Text = String;
+        fn origin(&self) -> Self::AccountId {
+            self.origin
+        }
+        fn sender(&self) -> Self::AccountId {
+            self.sender
+        }
+    }
+
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+    pub struct GearConfig;
+
+    impl traits::IConfig for GearConfig {
+        type AccountId = gstd::ActorId;
+        type Balance = u128;
+        type TokenId = u128;
+        type Text = String;
+        fn origin(&self) -> Self::AccountId {
+            gstd::exec::origin()
+        }
+        fn sender(&self) -> Self::AccountId {
+            gstd::msg::source()
+        }
+    }
+}
+
+mod state {
+    use super::*;
+
+    pub static mut STATE: Option<contract::Contract<config::GearConfig>> = None;
+}
+
+pub mod codec {
+    use super::*;
+    use parity_scale_codec::{Decode, Encode};
+    use scale_info::TypeInfo;
+
+    #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
+    pub enum Action {
+        SetUrl(String, String),
+    }
+
+    #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
+    pub enum Event {
+        SetUrl(String, String),
+    }
+
+    #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
+    pub enum Query {
+        GetUrl(String),
+    }
+
+    #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Encode, Decode, TypeInfo)]
+    pub enum State {
+        Url(Option<String>),
+    }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn init() {
+    state::STATE = Some(contract::Contract::<config::GearConfig>::new());
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn handle() {
+    use traits::GURLS;
+    let state = state::STATE.as_mut().expect("failed to get state as mut");
+    let action: codec::Action = gstd::msg::load().expect("failed to load action");
+    match action {
+        codec::Action::SetUrl(key, value) => {
+            state.set_url(key.clone(), value.clone());
+            gstd::msg::reply(codec::Event::SetUrl(key, value), 0).expect("failed to set url");
+        }
+    }
+}
+
+gstd::metadata! {
+    title: "GURLS",
+    handle:
+        input: codec::Action,
+        output: codec::Event,
+    state:
+        input: codec::Query,
+        output: codec::State,
 }
