@@ -13,9 +13,8 @@ import {
 } from "@gear-js/api";
 import meta from "./metadata.json";
 // import nanoid
-// import { customAlphabet, nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 // import emojis from "emojis-list";
-import bip39 from "bip39";
 // import fs from "fs";
 /*
 import * as polkadotApi from "@polkadot/api";
@@ -28,18 +27,15 @@ import * as polkadotKeyring from "@polkadot/keyring";
 
 // window.nanoid = nanoid;
 // window.emojis = emojis;
-window.bip39 = bip39;
+// window.bip39 = bip39;
 
 window.programId =
   "0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750";
 
-// const Nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789");
+const Nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789");
 
 function randomCode(n: number) {
-  // return Nanoid(n);
-  return window.bip39.wordlists.chinese_simplified.sort(() =>
-    0.5 - Math.random()
-  ).slice(0, n).join("");
+  return Nanoid(n);
 }
 
 let apiPromise = GearApi.create({
