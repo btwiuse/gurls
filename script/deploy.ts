@@ -7,9 +7,11 @@ import { decodeAddress } from "https://github.com/btwiuse/gear-js/raw/deno/api/s
 import { waitForInit } from "./waitForInit.ts";
 import { postMetadata } from "./postMetadata.ts";
 
+let RPC_NODE = "wss://rpc-node.gear-tech.io";
+
 async function initGearApi() {
   return await GearApi.create({
-    providerAddress: "wss://rpc-node.gear-tech.io",
+    providerAddress: RPC_NODE,
   });
 }
 
@@ -41,7 +43,7 @@ let metaWasm = Deno.readFileSync(
 
 let meta = await getWasmMetadata(metaWasm);
 
-console.log("Deploying contract...");
+console.log("Deploying program...");
 
 let program = {
   code,
@@ -109,7 +111,17 @@ await new Promise((resolve, reject) => {
 // await waitForInit(api, programId);
 
 console.log("Posting metadata...");
+
 await postMetadata(api, alice, metaWasm, programId);
 
-console.log("Program deployed:", await api.program.exists(programId));
+// assert program exists
+if (!await api.program.exists(programId)) {
+  throw new Error("Program not found");
+}
+
+console.log(
+  "Program deloyed:",
+  `https://idea.gear-tech.io/programs/${programId}?node=${RPC_NODE}`,
+);
+
 Deno.exit(0);
