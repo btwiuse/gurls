@@ -62,6 +62,7 @@ In this workshop, you will learn how to
 ## References
 
 - https://github.com/gear-tech/gear/tree/master/examples
+- https://en.wikipedia.org/wiki/Static_(keyword)
 - https://doc.rust-lang.org/reference/items/static-items.html#mutable-statics
 - https://www.pwnthebox.net/rust/2020/11/01/deciphering-no-mangle.html
 - https://docs.rust-embedded.org/book/interoperability/rust-with-c.html#building-a-c-api
