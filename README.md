@@ -1,16 +1,21 @@
 # Gear URL Shortener (GURLS)
 
-A URL shortener built on top of Deno Deploy and Gear, inspired by [goo.gl](https://goo.gl), [git.io](https://git.io), [yaus](https://github.com/denoland/deploy_examples/tree/main/yaus)
+A URL shortener built on top of Deno Deploy and Gear, inspired by
+[goo.gl](https://goo.gl), [git.io](https://git.io),
+[yaus](https://github.com/denoland/deploy_examples/tree/main/yaus)
 
-- Backend API / SSR server: [https://btwiuse/deploy_examples/blob/btwiuse/urls/mod.tsx](https://github.com/btwiuse/deploy_examples/blob/btwiuse/gurls/mod.tsx)
-- Frontend script / browser logic: [./gear.ts](./gear.ts)
+- Backend API / SSR server:
+  [https://btwiuse/deploy_examples/blob/btwiuse/urls/mod.tsx](https://github.com/btwiuse/deploy_examples/blob/btwiuse/gurls/mod.tsx)
+- Frontend script / browser logic: [./gurls.ts](./gurls.ts)
 - Contract: [./lib.rs](./lib.rs)
 
 ## Live Demo
 
-- DEV_KEY: `bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice`
+- DEV_KEY:
+  `bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice`
 - RPC_NODE: `wss://rpc-node.gear-tech.io`
-- PROGRAM_ID: [`0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750`](https://idea.gear-tech.io/programs/0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750)
+- PROGRAM_ID:
+  [`0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750`](https://idea.gear-tech.io/programs/0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750)
 
 Visit one of the links for a live version
 
@@ -20,10 +25,11 @@ Visit one of the links for a live version
   - created by `npx create-gear-app`
   - TODO: port to Next.js
 - http://127.0.0.1:3000
-  - run `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
-
+  - run
+    `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
 
 ## Directory Layout
+
 ```
 .
 ├── Makefile               // Make targets: build, deploy, publish, clean, ...

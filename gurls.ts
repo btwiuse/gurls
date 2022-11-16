@@ -11,23 +11,8 @@ import {
   getWasmMetadata,
   Metadata,
 } from "@gear-js/api";
-import meta from "./metadata.json";
-// import nanoid
+import meta from "./dist/gurls.meta.json" assert { type: "json" };
 import { customAlphabet } from "nanoid";
-// import emojis from "emojis-list";
-// import fs from "fs";
-/*
-import * as polkadotApi from "@polkadot/api";
-import * as polkadotUtil from "@polkadot/util";
-import * as polkadotKeyring from "@polkadot/keyring";
-*/
-
-// import metaWasm from '/home/aaron/gurls/target/wasm32-unknown-unknown/release/gurls.meta.wasm';
-// window.metaWasm = metaWasm;
-
-// window.nanoid = nanoid;
-// window.emojis = emojis;
-// window.bip39 = bip39;
 
 window.programId =
   "0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750";
@@ -50,7 +35,7 @@ let outputSpan = document.getElementById("outputSpan");
 initApi();
 
 async function checkWeb3(): boolean {
-  shorten.innerHTML = "Checking wallet extension ...";
+  shorten.innerHTML = "Checking wallet ...";
   let extensions = await web3Enable("GURLS");
   return extensions.length > 0;
 }

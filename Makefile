@@ -9,6 +9,7 @@ build:
 	cargo build --release
 	cp target/wasm32-unknown-unknown/release/gurls.*.wasm dist/
 	cat dist/gurls.meta.wasm | base64 -w0 | jq -R . > dist/gurls.meta.wasm.base64.json
+	deno run -A script/metadata.ts > dist/gurls.meta.json
 	yarn && node esbuild.config.mjs
 
 fmt:

@@ -87,7 +87,7 @@ let { programId, extrinsic } = api.program.create({
   gasLimit: gas.min_limit,
 }, meta);
 
-console.log({codeId, programId});
+console.log({ codeId, programId });
 
 await new Promise((resolve, reject) => {
   api.program.signAndSend(alice, ({ events, status }) => {
