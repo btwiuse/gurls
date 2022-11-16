@@ -50,7 +50,7 @@ In this workshop, you will learn how to
 
 - Implement basic contract logic
 - Deploy your contract using [Gear Idea](https://idea.gear-tech.io)
-- Use `@gear-js/api`
+- Use [`@gear-js/api`](https://www.npmjs.com/package/@gear-js/api)
   - to interact with published contract
     - read ( get program state )
     - write ( sending message )
