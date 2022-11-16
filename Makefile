@@ -4,12 +4,14 @@ init:
 	cargo install cargo-expand
 	yarn
 
+expand:
+	cargo expand > dist/lib.expanded.rs
+
 deploy: build
 	deno run -A --unsafely-ignore-certificate-errors script/deploy.ts
 
 build:
 	mkdir -p dist
-	cargo expand > dist/lib.expanded.rs
 	cargo build --release
 	cp target/wasm32-unknown-unknown/release/gurls.*.wasm dist/
 	cat dist/gurls.meta.wasm | base64 -w0 | jq -R . > dist/gurls.meta.wasm.base64.json
