@@ -1,17 +1,15 @@
-all: build expand fmt
+all: build fmt
 
 deploy:
 	deno run -A --unsafely-ignore-certificate-errors deploy.ts
 
 build:
-	cargo build --release
-	yarn && node esbuild.config.mjs
 	mkdir -p dist
+	cargo expand > dist/lib.expanded.rs
+	cargo build --release
 	cp target/wasm32-unknown-unknown/release/gurls.*.wasm dist/
 	cat dist/gurls.meta.wasm | base64 -w0 | jq -R . > dist/gurls.meta.wasm.base64.json
-
-expand:
-	cargo expand > lib.expanded.rs
+	yarn && node esbuild.config.mjs
 
 fmt:
 	deno fmt --ignore=node_modules,target,dist
