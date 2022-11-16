@@ -6,6 +6,15 @@ A URL shortener built on top of Deno Deploy and Gear, inspired by [goo.gl](https
 - Frontend script / browser logic: [./gear.ts](./lib.rs)
 - Contract: [./lib.rs](./lib.rs)
 
+## Live Demo
+
+Visit one of the links for a live version
+
+- https://gurls.deno.dev
+- https://gurls.up.railway.app
+- http://127.0.0.1:3000
+  - `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
+
 ## Objectives
 
 In this workshop, you will learn how to
