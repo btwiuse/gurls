@@ -12,8 +12,11 @@ Visit one of the links for a live version
 
 - https://gurls.deno.dev
 - https://gurls.up.railway.app
+- https://gurls.vercel.app (WIP)
+  - created by `npx create-gear-app`
+  - TODO: port to Next.js
 - http://127.0.0.1:3000
-  - `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
+  - run `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
 
 ## Objectives
 
