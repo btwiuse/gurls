@@ -18,26 +18,12 @@ Visit one of the links for a live version
 - http://127.0.0.1:3000
   - run `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
 
-## Objectives
-
-In this workshop, you will learn how to
-
-- Implement basic contract logic
-- Compile and deploy your contract
-- Use `@gear-js/api`
-  - to interact with published contract
-    - read ( get program state )
-    - write ( sending message )
-  - from both frontend and backend
-    - browser
-    - nodejs
-    - deno
 
 ## Directory Layout
 ```
 .
 ├── Makefile               // Make targets: build, deploy, publish, clean, ...
-├── deploy.ts              // Contract deploy utility
+├── script/                // Utility scripts
 ├── dist/                  // Artifacts to be published at https://unpkg.com/browse/gurls/dist/
 
 ├── lib.rs                 // Gear contract
@@ -54,3 +40,23 @@ In this workshop, you will learn how to
 └── README.md              // This file
 ```
 
+## Objectives
+
+In this workshop, you will learn how to
+
+- Implement basic contract logic
+- Deploy your contract using [Gear Idea](https://idea.gear-tech.io)
+- Use `@gear-js/api`
+  - to interact with published contract
+    - read ( get program state )
+    - write ( sending message )
+  - from both frontend and backend
+    - browser
+    - nodejs
+    - deno
+
+## References
+
+- https://doc.rust-lang.org/reference/items/static-items.html#mutable-statics
+- https://www.pwnthebox.net/rust/2020/11/01/deciphering-no-mangle.html
+- https://docs.rust-embedded.org/book/interoperability/rust-with-c.html#building-a-c-api

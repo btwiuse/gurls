@@ -58,8 +58,10 @@ use codec::{
     query::{Query, State},
 };
 
+// contract state
 static mut STATE: Option<Contract> = None;
 
+// what this line says is "here is a C function written in Rust"
 #[no_mangle]
 unsafe extern "C" fn init() {
     STATE = Some(Contract::default());
