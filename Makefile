@@ -6,6 +6,9 @@ deploy:
 build:
 	cargo build --release
 	yarn && node esbuild.config.mjs
+	mkdir -p dist
+	cp target/wasm32-unknown-unknown/release/gurls.*.wasm dist/
+	cat dist/gurls.meta.wasm | base64 -w0 | jq -R . > dist/gurls.meta.wasm.base64.json
 
 expand:
 	cargo expand > lib.expanded.rs
@@ -14,10 +17,7 @@ fmt:
 	deno fmt --ignore=node_modules,target,dist
 	cargo fmt
 
-publish:
-	mkdir -p dist
-	cp target/wasm32-unknown-unknown/release/gurls.*.wasm dist/
-	cat dist/gurls.meta.wasm | base64 -w0 | jq -R . > dist/gurls.meta.wasm.base64.json
+publish: build
 	yarn publish --access public
 
 clean:
