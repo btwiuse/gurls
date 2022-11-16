@@ -3,7 +3,7 @@ import {
   GearApi,
   GearKeyring,
   getWasmMetadata,
-} from "/home/aaron/gear-js/api/src/index.ts";
+} from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
 import metaWasmBase64 from "../dist/gurls.meta.wasm.base64.json" assert {
   type: "json",
 };
