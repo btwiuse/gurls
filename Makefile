@@ -24,4 +24,4 @@ clean:
 	rm -rf dist target
 
 start:
-	deno run -rA index.ts
+	deno run -A https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx
