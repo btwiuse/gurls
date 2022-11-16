@@ -1,7 +1,7 @@
 all: build fmt
 
 deploy:
-	deno run -A --unsafely-ignore-certificate-errors deploy.ts
+	deno run -A --unsafely-ignore-certificate-errors script/deploy.ts
 
 build:
 	mkdir -p dist
