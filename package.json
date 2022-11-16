@@ -1,0 +1,11 @@
+{
+  "name": "gurls",
+  "version": "0.0.3-1",
+  "description": "Gear URL Shortener (GURLS)",
+  "repository": "https://github.com/btwiuse/gurls",
+  "author": "btwiuse",
+  "license": "MIT",
+  "dependencies": {
+    "@gear-js/api": "^0.27.3"
+  }
+}
