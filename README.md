@@ -96,6 +96,7 @@ In this workshop, you will learn how to
 
 ## References
 
+- https://wiki.gear-tech.io/docs/getting-started-in-5-minutes/
 - https://github.com/gear-tech/gear/tree/master/examples
 - https://en.wikipedia.org/wiki/Static_(keyword)
 - https://doc.rust-lang.org/reference/items/static-items.html#mutable-statics
