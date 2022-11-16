@@ -8,6 +8,10 @@ A URL shortener built on top of Deno Deploy and Gear, inspired by [goo.gl](https
 
 ## Live Demo
 
+- DEV_KEY: `bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice`
+- RPC_NODE: `wss://rpc-node.gear-tech.io`
+- PROGRAM_ID: [`0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750`](https://idea.gear-tech.io/programs/0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750)
+
 Visit one of the links for a live version
 
 - https://gurls.deno.dev
@@ -60,3 +64,4 @@ In this workshop, you will learn how to
 - https://doc.rust-lang.org/reference/items/static-items.html#mutable-statics
 - https://www.pwnthebox.net/rust/2020/11/01/deciphering-no-mangle.html
 - https://docs.rust-embedded.org/book/interoperability/rust-with-c.html#building-a-c-api
+- https://github.com/gear-tech/gear-js/blob/main/api/README.md
