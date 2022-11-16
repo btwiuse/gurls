@@ -5,7 +5,60 @@
   "repository": "https://github.com/btwiuse/gurls",
   "author": "btwiuse",
   "license": "MIT",
+  "main": "dist/gurls.js",
+  "types": "dist/gurls.d.ts",
+  "scripts": {
+    "build": "make build",
+    "start": "make start",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel . --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/btwiuse/gurls/issues"
+  },
+  "homepage": "https://github.com/btwiuse/gurlss#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.18.9",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
+    "@btwiuse/serve": "^1.0.2",
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
+    "@rollup/plugin-typescript": "^8.3.4",
+    "babel-plugin-transform-bigint": "^1.0.23",
+    "buffer": "^6.0.3",
+    "esbuild": "^0.15.1",
+    "esbuild-plugin-d.ts": "^1.1.0",
+    "node-stdlib-browser": "^1.2.0",
+    "prettier": "^2.7.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "typescript": "^3.7.5"
+  },
   "dependencies": {
-    "@gear-js/api": "^0.27.3"
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@gear-js/api": "^0.27.3",
+    "@mui/material": "^5.9.2",
+    "@polkadot/api": "^9.8.1",
+    "@polkadot/extension-dapp": "^0.44.6",
+    "@polkadot/keyring": "^10.1.12",
+    "@polkadot/util": "^10.1.12",
+    "@solana/pay": "^0.2.1",
+    "@solana/spl-token": "0.2",
+    "@solana/web3.js": "^1.53.0",
+    "bignumber.js": "^9.1.0",
+    "bip39": "^3.0.4",
+    "emojis-list": "^3.0.0",
+    "nanoid": "^4.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-toastify": "^9.0.8"
   }
 }
