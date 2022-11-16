@@ -3,7 +3,7 @@
 A URL shortener built on top of Deno Deploy and Gear, inspired by [goo.gl](https://goo.gl), [git.io](https://git.io), [yaus](https://github.com/denoland/deploy_examples/tree/main/yaus)
 
 - Backend API / SSR server: [https://btwiuse/deploy_examples/blob/btwiuse/urls/mod.tsx](https://github.com/btwiuse/deploy_examples/blob/btwiuse/gurls/mod.tsx)
-- Frontend script / browser logic: [./gear.ts](./lib.rs)
+- Frontend script / browser logic: [./gear.ts](./gear.ts)
 - Contract: [./lib.rs](./lib.rs)
 
 ## Live Demo
