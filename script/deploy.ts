@@ -56,6 +56,7 @@ let { codeId } = await api.program.upload(
 );
 
 if (!await api.code.exists(codeId)) {
+  console.log("CodeID not found, uploading...");
   await new Promise((resolve, reject) => {
     api.code.signAndSend(alice, ({ events, status }) => {
       // console.log(`STATUS: ${status.toString()}`);
@@ -69,6 +70,8 @@ if (!await api.code.exists(codeId)) {
       });
     });
   });
+} else {
+  console.log("CodeID already exists, skipping upload...");
 }
 
 let gas = await api.program.calculateGas.initCreate(

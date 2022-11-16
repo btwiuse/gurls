@@ -1,6 +1,6 @@
 all: build fmt
 
-deploy:
+deploy: build
 	deno run -A --unsafely-ignore-certificate-errors script/deploy.ts
 
 build:
