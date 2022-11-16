@@ -1,3 +1,3 @@
 fn main() {
-    gasm::build();
+    gear_wasm_builder::build();
 }
