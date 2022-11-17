@@ -1,11 +1,18 @@
 import {
+  decodeAddress,
   GearApi,
   GearKeyring,
   getWasmMetadata,
-} from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
-import { decodeAddress } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/utils/index.ts";
-import { waitForInit } from "./waitForInit.ts";
+} from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
+// import { waitForInit } from "./waitForInit.ts";
 import { postMetadata } from "./postMetadata.ts";
+import codeBase64 from "../dist/opt.wasm.base64.json" assert { type: "json" };
+import metaWasmBase64 from "../dist/meta.wasm.base64.json" assert {
+  type: "json",
+};
+
+let code = Uint8Array.from(atob(codeBase64), (c) => c.charCodeAt(0));
+let metaWasm = Uint8Array.from(atob(metaWasmBase64), (c) => c.charCodeAt(0));
 
 let RPC_NODE = "wss://rpc-node.gear-tech.io";
 
@@ -32,14 +39,6 @@ async function showFreeBalance(api: GearApi, address: string) {
 await showFreeBalance(api, alice.address);
 
 console.log("decodedAddress:", aliceHex);
-
-// read file from ./target/wasm32-unknown-unknown/release/gurls.meta.wasm
-let code = Deno.readFileSync(
-  "./target/wasm32-unknown-unknown/release/gurls.opt.wasm",
-);
-let metaWasm = Deno.readFileSync(
-  "./target/wasm32-unknown-unknown/release/gurls.meta.wasm",
-);
 
 let meta = await getWasmMetadata(metaWasm);
 

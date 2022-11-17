@@ -13,9 +13,11 @@ deploy: build
 build:
 	mkdir -p dist
 	cargo build --release
-	cp target/wasm32-unknown-unknown/release/gurls.*.wasm dist/
-	cat dist/gurls.meta.wasm | base64 -w0 | jq -R . > dist/gurls.meta.wasm.base64.json
-	deno run -A script/metadata.ts > dist/gurls.meta.json
+	cp -v target/wasm32-unknown-unknown/release/gurls.opt.wasm dist/opt.wasm
+	cp -v target/wasm32-unknown-unknown/release/gurls.meta.wasm dist/meta.wasm
+	cat dist/meta.wasm | base64 -w0 | jq -R . > dist/meta.wasm.base64.json
+	cat dist/opt.wasm | base64 -w0 | jq -R . > dist/opt.wasm.base64.json
+	deno run -A script/metadata.ts > dist/meta.json
 	node esbuild.config.mjs
 
 fmt:

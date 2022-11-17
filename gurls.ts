@@ -11,7 +11,7 @@ import {
   getWasmMetadata,
   Metadata,
 } from "@gear-js/api";
-import meta from "./dist/gurls.meta.json" assert { type: "json" };
+import meta from "./dist/meta.json" assert { type: "json" };
 import { customAlphabet } from "nanoid";
 
 window.programId =

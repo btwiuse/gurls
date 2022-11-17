@@ -30,7 +30,8 @@ Visit one of the links for a live version
 
 ## Deploy
 
-Before you proceed, make sure you have `git`, `yarn`, `rustup`, `deno`, `node`, `jq` installed
+Before you proceed, make sure you have `git`, `yarn`, `rustup`, `deno`, `node`,
+`jq` installed
 
 ```
 $ git clone https://github.com/btwiuse/gurls && cd gurls
