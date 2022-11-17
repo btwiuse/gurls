@@ -13,7 +13,7 @@ esbuild
     entryPoints: ["gurls.ts"],
     bundle: true,
     // platform: "node",
-    format: "esm",
+    // format: "esm",
     // keepNames: true,
     // minify: false,
     outfile: "dist/gurls.js",

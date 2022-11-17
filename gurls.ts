@@ -8,8 +8,6 @@ import {
   decodeAddress,
   GearApi,
   GearKeyring,
-  getWasmMetadata,
-  Metadata,
 } from "@gear-js/api";
 import { meta } from "./dist/mod.ts";
 import { customAlphabet } from "nanoid";
@@ -44,7 +42,6 @@ async function initApi() {
   shorten.innerHTML = "Initializing api ...";
   let api = await apiPromise;
 
-  // window.meta = await getWasmMetadata(metaWasm);
   window.meta = meta;
   let alice = await GearKeyring.fromSuri("//Alice");
   window.alice = alice;
