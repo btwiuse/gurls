@@ -5,6 +5,6 @@ import metaB64 from "./meta.wasm.base64.json" assert { type: "json" };
 
 let code = Uint8Array.from(atob(codeB64), (c) => c.charCodeAt(0));
 let metaWasm = Uint8Array.from(atob(metaB64), (c) => c.charCodeAt(0));
-let meta = meta as Metadata;
+let meta = metaJson as Metadata;
 
 export { code, meta, metaWasm };
