@@ -20,6 +20,9 @@ build:
 	deno run -A script/metadata.ts > dist/meta.json
 	node esbuild.config.mjs
 
+repl:
+	deno repl --eval-file=script/repl.ts
+
 fmt:
 	deno fmt --ignore=node_modules,target,dist
 	cargo fmt
