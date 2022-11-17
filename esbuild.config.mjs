@@ -13,7 +13,7 @@ esbuild
     entryPoints: ["gurls.ts"],
     bundle: true,
     // platform: "node",
-    // format: "esm",
+    format: "esm",
     // keepNames: true,
     // minify: false,
     outfile: "dist/gurls.js",
@@ -24,7 +24,7 @@ esbuild
     minify: !isDevServer,
     sourcemap: false,
     incremental: isDevServer,
-    target: ["es2020"],
+    target: ["esnext"],
     define: {
       "process.env.NODE_ENV": isDevServer ? '"development"' : '"production"',
     },

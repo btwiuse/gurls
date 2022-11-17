@@ -11,7 +11,7 @@ import {
   getWasmMetadata,
   Metadata,
 } from "@gear-js/api";
-import meta from "./dist/meta.json" assert { type: "json" };
+import { meta } from "./dist/mod.ts";
 import { customAlphabet } from "nanoid";
 
 window.programId =
@@ -45,7 +45,7 @@ async function initApi() {
   let api = await apiPromise;
 
   // window.meta = await getWasmMetadata(metaWasm);
-  window.meta = meta as Metadata;
+  window.meta = meta;
   let alice = await GearKeyring.fromSuri("//Alice");
   window.alice = alice;
   window.aliceRaw = decodeAddress(alice.address);

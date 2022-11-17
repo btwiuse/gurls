@@ -17,7 +17,7 @@ build:
 	cp -v target/wasm32-unknown-unknown/release/gurls.meta.wasm dist/meta.wasm
 	cat dist/meta.wasm | base64 -w0 | jq -R . > dist/meta.wasm.base64.json
 	cat dist/opt.wasm | base64 -w0 | jq -R . > dist/opt.wasm.base64.json
-	deno run -A script/metadata.ts > dist/meta.json
+	cp script/mod.ts dist/mod.ts
 	node esbuild.config.mjs
 
 repl:

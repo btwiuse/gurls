@@ -20,7 +20,7 @@ export async function postMetadata(
   const signature = u8aToHex(alice.sign(JSON.stringify(meta)));
 
   let params = {
-    "name": meta.title,
+    "name": "😎😊💕⚙️",
     "meta": JSON.stringify(meta),
     "title": meta.title,
     "metaWasm": encode(metaWasm),
