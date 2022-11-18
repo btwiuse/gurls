@@ -4,7 +4,7 @@ import {
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
-let { RPC_NODE }  = config();
+let { RPC_NODE } = config();
 
 async function initGearApi() {
   return await GearApi.create({

@@ -9,7 +9,7 @@ import { postMetadata } from "./postMetadata.ts";
 import { code, meta, metaWasm } from "../dist/mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
-let { RPC_NODE }  = config();
+let { RPC_NODE, PROGRAM_NAME } = config();
 
 async function initGearApi() {
   return await GearApi.create({
@@ -104,7 +104,7 @@ await new Promise((resolve, reject) => {
 
 console.log("Posting metadata...");
 
-await postMetadata(api, alice, metaWasm, programId);
+await postMetadata(api, alice, metaWasm, programId, PROGRAM_NAME);
 
 // assert program exists
 if (!await api.program.exists(programId)) {

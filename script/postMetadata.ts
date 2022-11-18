@@ -12,6 +12,7 @@ export async function postMetadata(
   alice: GearKeyring,
   metaWasm: Uint8Array,
   programId: string,
+  name: string,
 ) {
   let genesis = api.genesisHash.toHex();
 
@@ -20,7 +21,7 @@ export async function postMetadata(
   const signature = u8aToHex(alice.sign(JSON.stringify(meta)));
 
   let params = {
-    "name": "😎😊💕⚙️",
+    "name": name,
     "meta": JSON.stringify(meta),
     "title": meta.title,
     "metaWasm": encode(metaWasm),
