@@ -118,6 +118,9 @@ async function addUrl(code: string, url: string) {
       window.account.address,
       ({ events, status }) => {
         console.log(`STATUS: ${status.toString()}`);
+        if (status.isInBlock) {
+          resolve(status.asInBlock);
+        }
         if (status.isFinalized) {
           resolve(status.asFinalized);
         }
