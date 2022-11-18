@@ -2,13 +2,16 @@ import {
   GearApi,
   GearKeyring,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
+import { config } from "https://deno.land/x/dotenv/mod.ts";
+
+let { RPC_NODE }  = config();
 
 async function initGearApi() {
   return await GearApi.create({
-    providerAddress: "wss://rpc-node.gear-tech.io",
+    providerAddress: RPC_NODE,
   });
 }
 
-console.log("api is initializing. Please hold on...");
+console.log(`api (${RPC_NODE}) is initializing. Please hold on...`);
 
 const api = await initGearApi();

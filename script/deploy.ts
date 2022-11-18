@@ -7,8 +7,9 @@ import {
 // import { waitForInit } from "./waitForInit.ts";
 import { postMetadata } from "./postMetadata.ts";
 import { code, meta, metaWasm } from "../dist/mod.ts";
+import { config } from "https://deno.land/x/dotenv/mod.ts";
 
-let RPC_NODE = "wss://rpc-node.gear-tech.io";
+let { RPC_NODE }  = config();
 
 async function initGearApi() {
   return await GearApi.create({
@@ -51,7 +52,7 @@ let { codeId } = await api.program.upload(
 if (!await api.code.exists(codeId)) {
   console.log("CodeID not found, uploading...");
   await new Promise((resolve, reject) => {
-    api.code.signAndSend(alice, ({ events, status }) => {
+    api.program.signAndSend(alice, ({ events, status }) => {
       // console.log(`STATUS: ${status.toString()}`);
       if (status.isFinalized) {
         resolve(status.asFinalized);
