@@ -17,7 +17,7 @@ async function initGearApi() {
   });
 }
 
-console.log("api is initializing. Please hold on...");
+console.log(`api (${RPC_NODE}) is initializing. Please hold on...`);
 
 let api = await initGearApi();
 

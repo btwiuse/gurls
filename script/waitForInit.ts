@@ -5,7 +5,7 @@ import {
   ProgramChanged,
   UserMessageSent,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
-import { UnsubscribePromise } from "https://deno.land/x/polkadot@0.2.15/api/types/index.ts";
+import { UnsubscribePromise } from "https://deno.land/x/polkadot/api/types/index.ts";
 
 export function waitForInit(
   api: GearApi,

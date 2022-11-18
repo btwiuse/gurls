@@ -5,7 +5,7 @@ import {
   getWasmMetadata,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
 import { encode } from "https://deno.land/std/encoding/base64.ts";
-import { u8aToHex } from "https://deno.land/x/polkadot@0.2.15/util/index.ts";
+import { u8aToHex } from "https://deno.land/x/polkadot/util/index.ts";
 
 export async function postMetadata(
   api: GearApi,
