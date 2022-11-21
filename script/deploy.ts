@@ -116,4 +116,17 @@ console.log(
   `https://idea.gear-tech.io/programs/${programId}?node=${RPC_NODE}`,
 );
 
+Deno.writeTextFileSync(
+  "./dist/deploy.json",
+  JSON.stringify(
+    {
+      codeId,
+      programId,
+      RPC_NODE,
+    },
+    null,
+    "  ",
+  ),
+);
+
 Deno.exit(0);
