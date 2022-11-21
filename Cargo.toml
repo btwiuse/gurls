@@ -14,8 +14,8 @@ path = "lib.rs"
 [dependencies]
 gstd = { git = "https://github.com/gear-tech/gear.git" }
 num-traits = { version = "0.2", default-features = false }
-scale-info = { version = "2.1.1", default-features = false, features = ["derive"] }
-parity-scale-codec = { version = "3.1.2", default-features = false, features = ["derive"] }
+scale-info = { version = "2", default-features = false, features = ["derive"] }
+parity-scale-codec = { version = "3", default-features = false, features = ["derive"] }
 
 [build-dependencies]
 gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git" }

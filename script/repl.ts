@@ -1,7 +1,7 @@
 import {
   GearApi,
   GearKeyring,
-} from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
+} from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 let { RPC_NODE } = config();

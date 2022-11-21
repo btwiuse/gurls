@@ -3,7 +3,7 @@ import {
   GearApi,
   GearKeyring,
   getWasmMetadata,
-} from "https://github.com/btwiuse/gear-js/raw/deno/api/src/index.ts";
+} from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
 import { encode } from "https://deno.land/std/encoding/base64.ts";
 import { u8aToHex } from "https://deno.land/x/polkadot/util/index.ts";
 
