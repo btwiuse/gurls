@@ -15,7 +15,7 @@ A URL shortener built on top of Deno Deploy and Gear, inspired by
   `bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice`
 - RPC_NODE: `wss://rpc-node.gear-tech.io`
 - PROGRAM_ID:
-  [`0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750`](https://idea.gear-tech.io/programs/0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750)
+  [`0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750`](https://idea.gear-tech.io/programs/0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750?node=wss://rpc-node.gear-tech.io)
 
 Visit one of the links for a live version
 
