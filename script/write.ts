@@ -28,10 +28,7 @@ async function main() {
   const CODE = new Date().getTime().toString();
 
   const payload = {
-    AddUrl: {
-      Code: CODE,
-      Url: "https://google.com",
-    },
+    Set: true,
   };
   console.log(payload);
 

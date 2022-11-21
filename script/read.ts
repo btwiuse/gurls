@@ -22,7 +22,7 @@ async function main() {
 
   const api = await initGearApi();
 
-  let query = { "Code": "wtf" };
+  let query = { "Status": null };
 
   console.log({ programId: deploy.programId, metaWasm, query });
 
