@@ -7,16 +7,11 @@ mod contract {
     use crate::*;
 
     #[derive(Default)]
-    pub struct Contract(BTreeMap<String, String>);
+    pub struct Contract(pub bool);
 
     impl Contract {
-        pub fn add_url(&mut self, code: String, url: String) {
-            self.0
-                .try_insert(code, url)
-                .expect("failed to add url: code exists");
-        }
-        pub fn get_url(&self, code: String) -> Option<String> {
-            self.0.get(&code).cloned()
+        pub fn set(&mut self, b: bool) {
+            self.0 = b
         }
     }
 }
@@ -31,12 +26,12 @@ mod codec {
         use super::*;
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Action {
-            AddUrl { code: String, url: String },
+            Set(bool),
         }
 
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Event {
-            Added { code: String, url: String },
+            SetTo(bool),
         }
     }
 
@@ -44,12 +39,12 @@ mod codec {
         use super::*;
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Query {
-            Code(String),
+            Status,
         }
 
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum State {
-            MaybeUrl(Option<String>),
+            StatusOf(bool),
         }
     }
 }
@@ -72,9 +67,9 @@ unsafe extern "C" fn handle() {
     let state = STATE.as_mut().expect("failed to get state as mut");
     let action: Action = gstd::msg::load().expect("failed to load action");
     match action {
-        Action::AddUrl { code, url } => {
-            state.add_url(code.clone(), url.clone());
-            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
+        Action::Set(b) => {
+            state.set(b);
+            gstd::msg::reply(Event::SetTo(state.0), 0).expect("failed to reply");
         }
     }
 }
@@ -84,13 +79,13 @@ unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
     let state = STATE.as_ref().expect("failed to get contract state");
     let query: Query = gstd::msg::load().expect("failed to load query");
     let result = match query {
-        Query::Code(code) => State::MaybeUrl(state.get_url(code)),
+        Query::Status => State::StatusOf(state.0),
     };
     gstd::util::to_leak_ptr(result.encode())
 }
 
 gstd::metadata! {
-    title: "github.com/btwiuse/gurls",
+    title: "github.com/btwiuse/gboard",
     handle:
         input: Action,
         output: Event,

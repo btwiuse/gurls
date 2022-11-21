@@ -1,8 +1,8 @@
 {
-  "name": "gurls",
-  "version": "0.1.0",
-  "description": "Gear URL Shortener (GURLS)",
-  "repository": "https://github.com/btwiuse/gurls",
+  "name": "gboard",
+  "version": "0.0.0",
+  "description": "Gear Pixel Board",
+  "repository": "https://github.com/btwiuse/gboard",
   "author": "btwiuse",
   "license": "MIT",
   "main": "dist/gurls.js",

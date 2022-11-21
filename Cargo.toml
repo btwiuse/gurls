@@ -1,12 +1,12 @@
 [package]
-name = "gurls"
-version = "0.0.1"
+name = "gboard"
+version = "0.0.0"
 edition = "2021"
-description = "Gear URL Shortener (GURLS)"
+description = "Gear Pixel Board"
 license = "MIT"
 
 [lib]
-name = "gurls"
+name = "gboard"
 path = "lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
