@@ -4,11 +4,7 @@ import {
   web3FromAddress,
 } from "@polkadot/extension-dapp";
 // import * as gearApi from "@gear-js/api";
-import {
-  decodeAddress,
-  GearApi,
-  GearKeyring,
-} from "@gear-js/api";
+import { decodeAddress, GearApi, GearKeyring } from "@gear-js/api";
 import { meta } from "./dist/mod.ts";
 import { customAlphabet } from "nanoid";
 
