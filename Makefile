@@ -21,7 +21,7 @@ build:
 	cat dist/opt.wasm | base64 -w0 | jq -R . > dist/opt.wasm.base64.json
 	deno run -A script/meta.ts > dist/meta.json
 	cp script/mod.ts dist/mod.ts
-	# node esbuild.config.mjs
+	node esbuild.config.mjs
 
 repl:
 	deno repl --eval-file=script/repl.ts

@@ -1,4 +1,4 @@
-import { Metadata } from "https://cdn.jsdelivr.net/gh/btwiuse/gear-js@deno/api/index.ts";
+import { Metadata } from "https://raw.githubusercontent.com/btwiuse/gear-js/deno/api/index.ts";
 import metaJson from "./meta.json" assert { type: "json" };
 import codeB64 from "./opt.wasm.base64.json" assert { type: "json" };
 import metaB64 from "./meta.wasm.base64.json" assert { type: "json" };
