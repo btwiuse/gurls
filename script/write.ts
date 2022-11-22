@@ -27,9 +27,8 @@ async function main() {
 
   const CODE = new Date().getTime().toString();
 
-  const payload = {
-    Set: true,
-  };
+  // const payload = { Set: true };
+  const payload = { Toggle: null };
   console.log(payload);
 
   const gas = await api.program.calculateGas.handle(
