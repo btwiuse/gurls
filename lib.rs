@@ -13,6 +13,9 @@ mod contract {
         pub fn set(&mut self, b: bool) {
             self.0 = b
         }
+        pub fn toggle(&mut self) {
+            self.set(!self.0)
+        }
     }
 }
 use contract::Contract;
@@ -26,6 +29,7 @@ mod codec {
         use super::*;
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Action {
+            Toggle,
             Set(bool),
         }
 
@@ -69,6 +73,10 @@ unsafe extern "C" fn handle() {
     match action {
         Action::Set(b) => {
             state.set(b);
+            gstd::msg::reply(Event::SetTo(state.0), 0).expect("failed to reply");
+        }
+        Action::Toggle => {
+            state.toggle();
             gstd::msg::reply(Event::SetTo(state.0), 0).expect("failed to reply");
         }
     }
