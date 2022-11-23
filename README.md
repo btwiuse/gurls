@@ -2,7 +2,8 @@
 
 A Pixel Board on top of Gear, inspired by [matrix67.com](http://matrix67.com/)
 
-- Contract: [./contract](./contract/)
+- UI: [../src/pages/home/Home.tsx](https://github.com/btwiuse/gboard/blob/main/src/pages/home/Home.tsx)
+- Contract: [./contract/lib.rs](./contract/lib.rs)
 
 ## Live Demo
 
@@ -68,3 +69,4 @@ In this workshop, you will learn how to
   - https://github.com/gear-tech/gear-js/blob/main/api/README.md#read-state-of-program
   - https://github.com/gear-tech/gear-js/blob/main/api/README.md#send-message
   - https://github.com/gear-tech/gear-js/blob/main/api/README.md#subscribe-to-specific-gear-events
+- https://polkadot.js.org/docs/api/cookbook/tx/#how-can-i-batch-transactions
