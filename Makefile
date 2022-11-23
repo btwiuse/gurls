@@ -22,7 +22,6 @@ build:
 	deno run -A script/meta.ts > dist/meta.json
 	cp script/mod.ts dist/mod.ts
 	cp script/index.ts dist/index.ts
-	# node esbuild.config.mjs
 
 repl:
 	deno repl --eval-file=script/repl.ts

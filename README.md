@@ -38,9 +38,9 @@ CodeID already exists, skipping upload...
 }
 Posting metadata...
 {
-  name: "github.com/btwiuse/gurls",
+  name: "github.com/btwiuse/gboard",
   meta: '{"types":"0x180010146775726c7314636f64656318616374696f6e18416374696f6e0001041841646455726c080110636f...',
-  title: "github.com/btwiuse/gurls",
+  title: "github.com/btwiuse/gboard",
   metaWasm: "AGFzbQEAAAABTw1gAX8AYAF/AX9gAAF/YAN/f38Bf2AAAGADf39/AGACf38Bf2ACf38AYAR/f39/AGAEf39/fwF/YAV/f39/fwBg...",
   signature: "0x2e778426cd1ff638eba215ee6f210828bb7703cd320a45dd80b04f7bb3c7681a6a7d99f45b90d2cce58f887a93551b9439...",
   programId: "0x648df8e155670708c61327f0d9e0aefdea21c257acd5638d6a9a3d31e127ef3d",

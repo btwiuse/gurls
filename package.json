@@ -5,8 +5,6 @@
   "repository": "https://github.com/btwiuse/gboard",
   "author": "btwiuse",
   "license": "MIT",
-  "main": "dist/gurls.js",
-  "types": "dist/gurls.d.ts",
   "scripts": {
     "build": "make build",
     "start": "make start",
@@ -15,9 +13,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bugs": {
-    "url": "https://github.com/btwiuse/gurls/issues"
+    "url": "https://github.com/btwiuse/gboard/issues"
   },
-  "homepage": "https://github.com/btwiuse/gurlss#readme",
+  "homepage": "https://github.com/btwiuse/gboard#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
