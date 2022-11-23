@@ -55,6 +55,7 @@ mod codec {
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Query {
             Status,
+            Pixel(u16),
             DumpAll,
         }
 
@@ -109,6 +110,7 @@ unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
     let query: Query = gstd::msg::load().expect("failed to load query");
     let result = match query {
         Query::Status => State::StatusOf(state.pixel(0)),
+        Query::Pixel(n) => State::StatusOf(state.pixel(n)),
         Query::DumpAll => State::All(state.dump_all()),
     };
     gstd::util::to_leak_ptr(result.encode())
