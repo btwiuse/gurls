@@ -9,7 +9,7 @@ A Pixel Board on top of Gear, inspired by [matrix67.com](http://matrix67.com/)
 
 - DEV_KEY:
   `bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice`
-- RPC_NODE: `wss://rpc-node.gear-tech.io`
+- RPC_NODE: `wss://n.up.railway.app/rpc/ws`
 - PROGRAM_ID:
   [`0xe5046f27ada0b95657215894f64d6c5028f1c5cad59b77c82852169df83d1744`](https://idea.gear-tech.io/programs/0xe5046f27ada0b95657215894f64d6c5028f1c5cad59b77c82852169df83d1744?node=wss://n.up.railway.app/rpc/ws)
 
