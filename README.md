@@ -18,7 +18,8 @@ Visit one of the links for a live version
 - https://gboard.deno.dev
 - https://gboard.vercel.app
 - http://127.0.0.1:3000
-  - run `yarn && yarn start`
+  - `git clone https://github.com/btwiuse/gboard && cd gboard`
+  - `yarn && yarn start`
 
 ## Deploy Contract
 
