@@ -7,9 +7,9 @@ import {
 import { decodeAddress, GearApi, GearKeyring } from "@gear-js/api";
 import { meta } from "./dist/mod.ts";
 import { customAlphabet } from "nanoid";
+import deploy from "./dist/deploy.json";
 
-window.programId =
-  "0x024d4e3cf6afae2f53f3d0e0bdd33a24e903463a51bbd7ca7d2be5cbf66be750";
+window.programId = deploy.programId;
 
 const Nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789");
 
@@ -18,7 +18,7 @@ function randomCode(n: number) {
 }
 
 let apiPromise = GearApi.create({
-  providerAddress: "wss://rpc-node.gear-tech.io",
+  providerAddress: deploy.RPC_NODE,
 });
 
 let shorten = document.getElementById("shorten");
