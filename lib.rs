@@ -4,12 +4,23 @@
 use gstd::prelude::*;
 
 mod contract {
+    use gstd::exec;
+
     use crate::*;
 
     #[derive(Default)]
     pub struct Contract(BTreeMap<String, String>);
 
     impl Contract {
+        pub fn program_id(&self) -> gstd::ActorId {
+            exec::program_id()
+        }
+        pub fn user_id(&self) -> gstd::ActorId {
+            exec::origin()
+        }
+        pub fn source_id(&self) -> gstd::ActorId {
+            gstd::msg::source()
+        }
         pub fn add_url(&mut self, code: String, url: String) {
             self.0
                 .try_insert(code, url)
@@ -32,11 +43,21 @@ mod codec {
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Action {
             AddUrl { code: String, url: String },
+            ProgramId,
+            UserId,
+            SourceId,
+            Ids,
         }
 
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Event {
             Added { code: String, url: String },
+            Id(gstd::ActorId),
+            Ids {
+                program_id: gstd::ActorId,
+                user_id: gstd::ActorId,
+                source_id: gstd::ActorId,
+            },
         }
     }
 
@@ -75,6 +96,22 @@ unsafe extern "C" fn handle() {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
             gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
+        },
+        Action::ProgramId => {
+            gstd::msg::reply(Event::Id(state.program_id()) ,0).expect("failed to reply");
+        },
+        Action::UserId => {
+            gstd::msg::reply(Event::Id(state.user_id()) ,0).expect("failed to reply");
+        },
+        Action::SourceId => {
+            gstd::msg::reply(Event::Id(state.source_id()) ,0).expect("failed to reply");
+        },
+        Action::Ids => {
+            gstd::msg::reply(Event::Ids{
+                program_id: state.program_id(),
+                user_id: state.user_id(),
+                source_id: state.source_id(),
+            }, 0).expect("failed to reply");
         }
     }
 }
