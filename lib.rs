@@ -10,6 +10,18 @@ mod contract {
     pub struct Contract(BTreeMap<String, String>);
 
     impl Contract {
+        pub fn send_msg(&self, msg: String, to: gstd::ActorId) {
+            gstd::msg::send(
+                to,
+                Event::SentMsg {
+                    msg,
+                    to,
+                    from: gstd::exec::origin(),
+                },
+                0,
+            )
+            .expect("failed to send msg");
+        }
         pub fn add_url(&mut self, code: String, url: String) {
             self.0
                 .try_insert(code, url)
@@ -32,11 +44,20 @@ mod codec {
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Action {
             AddUrl { code: String, url: String },
+            SendMsg { msg: String, to: gstd::ActorId },
         }
 
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Event {
-            Added { code: String, url: String },
+            Added {
+                code: String,
+                url: String,
+            },
+            SentMsg {
+                msg: String,
+                to: gstd::ActorId,
+                from: gstd::ActorId,
+            },
         }
     }
 
@@ -75,6 +96,9 @@ unsafe extern "C" fn handle() {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
             gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
+        }
+        Action::SendMsg { msg, to } => {
+            state.send_msg(msg, to);
         }
     }
 }
