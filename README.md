@@ -9,10 +9,10 @@ A minimalistic IRC style terminal group chat built on top of Gear messages
 - PROGRAM_ID:
   [`0x7b742fc73552a132d3f97272658be0f030d8aade708aff32ad981d300aaf33ca`](https://idea.gear-tech.io/programs/0x7b742fc73552a132d3f97272658be0f030d8aade708aff32ad981d300aaf33ca?node=wss://rpc-node.gear-tech.io)
 
-Install `deno` (https://deno.land/manual@v1.28.2/getting_started/installation), then join the chat by running
+Install `deno` (https://deno.land/manual@v1.28.2/getting_started/installation), clone this repository, then join the chat by running
 
 ```
-$ deno run --allow-net https://raw.githubusercontent.com/btwiuse/gearchat/groupchat/script/chat.ts
+$ make chat
 ```
 
 ## Deploy

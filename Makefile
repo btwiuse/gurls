@@ -12,6 +12,9 @@ expand:
 deploy: build
 	deno run -A --unsafely-ignore-certificate-errors script/deploy.ts
 
+chat: build
+	./script/chat.ts
+
 build:
 	mkdir -p dist
 	cargo build --release
