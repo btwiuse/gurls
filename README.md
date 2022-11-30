@@ -57,5 +57,6 @@ In this workshop, you will learn how to
 ## References
 
 - https://zh.m.wikipedia.org/zh-hans/%E6%BC%94%E5%91%98%E6%A8%A1%E5%9E%8B
+- https://github.com/gear-tech/gear-js/tree/main/utils/meta-cli
 - https://github.com/gear-tech/gear-js/blob/main/api/README.md
   - https://github.com/gear-tech/gear-js/tree/main/api#encode--decode-payloads
