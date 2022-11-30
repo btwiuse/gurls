@@ -9,9 +9,11 @@ import {
   GearKeyring,
   getWasmMetadata,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
-import { meta } from "../dist/mod.ts";
+import { meta } from "https://unpkg.com/gearchat/dist/mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
-// import deploy from "../dist/deploy.json" assert { type: "json" };
+import deploy from "https://unpkg.com/gearchat/dist/deploy.json" assert {
+  type: "json",
+};
 
 let { RPC_NODE } = config();
 
@@ -24,11 +26,8 @@ async function initGearApi() {
 const api = await initGearApi();
 const alice = await GearKeyring.fromSuri("//Alice");
 const aliceHex = decodeAddress(alice.address);
-const genesis =
-  "0xd144f24baf0b991be22ea8dc7dd4540d9d1e971e6bf17b1770b9fc9c88272484";
-// deploy.programId
-const groupchat =
-  "0x5593668b673c000aed812d4ef8961cc89083760133b6fcb5943e2a2e77cf13ae";
+const genesis = api.genesisHash.toHex();
+const groupchat = deploy.programId;
 
 function decodeEvent(payload: string) {
   try {
@@ -98,7 +97,7 @@ function subscribeTo(event: string, callback: () => void) {
 }
 
 const refresh = async () => {
-  await new Promise((resolve)=>setTimeout(resolve, 6000));
+  await new Promise((resolve) => setTimeout(resolve, 6000));
   await showDecodedMessages();
   console.log();
   console.log("PRESS ENTER TO SEND:");
