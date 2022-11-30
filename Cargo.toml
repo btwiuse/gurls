@@ -1,12 +1,12 @@
 [package]
-name = "gurls"
+name = "gearchat"
 version = "0.0.1"
 edition = "2021"
-description = "Gear URL Shortener (GURLS)"
+description = "Gear Chat"
 license = "MIT"
 
 [lib]
-name = "gurls"
+name = "gearchat"
 path = "lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
