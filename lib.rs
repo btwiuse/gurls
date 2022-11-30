@@ -10,6 +10,12 @@ mod contract {
     pub struct Contract(BTreeMap<String, String>);
 
     impl Contract {
+        pub fn value_available(&self, ) -> u128 {
+            gstd::exec::value_available()
+        }
+        pub fn gas_available(&self, ) -> u128 {
+            gstd::exec::gas_available().into()
+        }
         pub fn add_url(&mut self, code: String, url: String) {
             self.0
                 .try_insert(code, url)
@@ -32,11 +38,14 @@ mod codec {
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Action {
             AddUrl { code: String, url: String },
+            ValueAvailable,
+            GasAvailable,
         }
 
         #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
         pub enum Event {
             Added { code: String, url: String },
+            FreeBalance(u128),
         }
     }
 
@@ -75,6 +84,12 @@ unsafe extern "C" fn handle() {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
             gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
+        },
+        Action::ValueAvailable => {
+            gstd::msg::reply(Event::FreeBalance(state.value_available()), 0).expect("failed to get available value");
+        },
+        Action::GasAvailable => {
+            gstd::msg::reply(Event::FreeBalance(state.gas_available()), 0).expect("failed to get available gas");
         }
     }
 }
