@@ -6,16 +6,19 @@ description = "Gear URL Shortener (GURLS)"
 license = "MIT"
 
 [lib]
-name = "gurls"
 path = "lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git" }
-num-traits = { version = "0.2", default-features = false }
-scale-info = { version = "2", default-features = false, features = ["derive"] }
-parity-scale-codec = { version = "3", default-features = false, features = ["derive"] }
+gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+scale-info = { version = "2", default-features = false }
+parity-scale-codec = { version = "3", default-features = false }
+io = { path = "io" }
 
 [build-dependencies]
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git" }
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+io = { path = "io" }
+
+# [workspace] members = [ "io" ]

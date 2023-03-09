@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@gear-js/api": "^0.27.5",
+    "@polkadot/api": "^9.13.6",
     "@polkadot/extension-dapp": "^0.44.6",
     "bignumber.js": "^9.1.0",
     "bip39": "^3.0.4",

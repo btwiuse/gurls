@@ -6,7 +6,7 @@ import {
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
 // import { waitForInit } from "./waitForInit.ts";
 import { postMetadata } from "./postMetadata.ts";
-import { code, meta, metaWasm } from "../dist/mod.ts";
+import { code, meta, metaHex } from "../dist/mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 let { RPC_NODE, PROGRAM_NAME } = config();
@@ -86,7 +86,7 @@ let { programId, extrinsic } = api.program.create({
 
 console.log({ codeId, programId });
 
-await new Promise((resolve, reject) => {
+let out = await new Promise((resolve, reject) => {
   api.program.signAndSend(alice, ({ events, status }) => {
     // console.log(`STATUS: ${status.toString()}`);
     if (status.isFinalized) {
@@ -100,16 +100,24 @@ await new Promise((resolve, reject) => {
   });
 });
 
+console.log(out);
+
 // await waitForInit(api, programId);
 
 console.log("Posting metadata...");
 
-await postMetadata(api, alice, metaWasm, programId, PROGRAM_NAME);
-
-// assert program exists
-if (!await api.program.exists(programId)) {
-  throw new Error("Program not found");
+for (let i = 0; i < 10; i++) {
+  // assert program exists
+  if (!await api.program.exists(programId)) {
+    // throw new Error("Program not found");
+    console.log("Program not found");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
 }
+
+let resp = await postMetadata(api, alice, metaHex, programId, PROGRAM_NAME);
+
+console.log(resp);
 
 console.log(
   "Program deloyed:",

@@ -10,25 +10,36 @@ import { u8aToHex } from "https://deno.land/x/polkadot/util/index.ts";
 export async function postMetadata(
   api: GearApi,
   alice: GearKeyring,
-  metaWasm: Uint8Array,
+  metaWasm: Uint8Array | string,
   programId: string,
   name: string,
 ) {
   let genesis = api.genesisHash.toHex();
 
-  let meta = await getWasmMetadata(metaWasm);
+  let params = {};
 
-  const signature = u8aToHex(alice.sign(JSON.stringify(meta)));
+  if (metaWasm instanceof Uint8Array) {
+    let meta = await getWasmMetadata(metaWasm);
 
-  let params = {
-    "name": name,
-    "meta": JSON.stringify(meta),
-    "title": meta.title,
-    "metaWasm": encode(metaWasm),
-    "signature": signature,
-    "programId": programId,
-    "genesis": genesis,
-  };
+    const signature = u8aToHex(alice.sign(JSON.stringify(meta)));
+
+    params = {
+      "name": name,
+      "meta": JSON.stringify(meta),
+      "title": meta.title,
+      "metaWasm": encode(metaWasm),
+      "signature": signature,
+      "programId": programId,
+      "genesis": genesis,
+    };
+  } else {
+    params = {
+      "name": name,
+      "metaHex": metaWasm,
+      "programId": programId,
+      "genesis": genesis,
+    };
+  }
 
   console.log(params);
 
