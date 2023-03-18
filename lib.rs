@@ -27,7 +27,7 @@ unsafe extern "C" fn handle() {
 #[no_mangle]
 extern "C" fn state() {
     let state = unsafe { STATE.as_ref().expect("failed to get contract state") };
-    gstd::msg::reply(state.0.clone(), 0).expect("Failed to share state");
+    gstd::msg::reply(state.clone(), 0).expect("Failed to share state");
 }
 
 #[no_mangle]

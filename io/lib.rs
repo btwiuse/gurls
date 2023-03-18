@@ -40,6 +40,6 @@ impl Metadata for ProgramMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = BTreeMap<String, String>;
-    // type State = Contract;
+    // type State = BTreeMap<String, String>;
+    type State = Contract;
 }

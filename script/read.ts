@@ -3,11 +3,13 @@ import {
   decodeAddress,
   GearApi,
   GearKeyring,
-  getWasmMetadata,
+  getProgramMetadata,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import deploy from "../dist/deploy.json" assert { type: "json" };
-import { metaWasm } from "../dist/mod.ts";
+import { metaHex } from "../dist/mod.ts";
+
+const meta = getProgramMetadata(metaHex);
 
 let { RPC_NODE } = config();
 
@@ -24,9 +26,9 @@ async function main() {
 
   let query = { "Code": "wtf" };
 
-  console.log({ programId: deploy.programId, metaWasm, query });
+  console.log({ programId: deploy.programId, meta, query });
 
-  const result = await api.programState.read(deploy.programId, metaWasm, query);
+  const result = await api.programState.read({ programId: deploy.programId}, meta);
 
   console.log("result:", result.toHuman());
 }

@@ -3,11 +3,13 @@ import {
   decodeAddress,
   GearApi,
   GearKeyring,
-  getWasmMetadata,
+  getProgramMetadata,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import deploy from "../dist/deploy.json" assert { type: "json" };
-import { meta } from "../dist/mod.ts";
+import { metaHex } from "../dist/mod.ts";
+
+const meta = getProgramMetadata(metaHex);
 
 let { RPC_NODE } = config();
 
