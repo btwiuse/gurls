@@ -1,3 +1,12 @@
+import {
+  ProgramDoesNotExistError,
+  ProgramExitedError,
+  ProgramTerminatedError,
+  SubmitProgramError,
+} from "https://github.com/btwiuse/gear-js/raw/deno/api/src/errors/index.ts";
+import { ProgramMap } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/types/interfaces/index.ts";
+import { Option } from "https://deno.land/x/polkadot@0.2.32/types/index.ts";
+import { HexString } from "https://deno.land/x/polkadot@0.2.32/util/types.ts";
 import { parse } from "https://deno.land/std/encoding/toml.ts";
 import {
   decodeAddress,
@@ -70,7 +79,7 @@ async function deployProgram(codeId: string) {
   let gas = await api.program.calculateGas.initCreate(
     aliceHex,
     codeId,
-    "0x00",
+    INIT_PAYLOAD,
     0,
     true,
     await meta(),
@@ -79,7 +88,7 @@ async function deployProgram(codeId: string) {
 
   let { programId, extrinsic } = api.program.create({
     codeId,
-    initPayload: "0x00",
+    initPayload: INIT_PAYLOAD,
     gasLimit: gas.min_limit,
   }, await meta());
 
@@ -99,6 +108,7 @@ async function deployProgram(codeId: string) {
     });
   });
 
+  await checkProgram(programId);
   // console.log(out);
   return programId;
 }
@@ -108,8 +118,6 @@ async function makePayload(programId: string) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     // assert program exists
     if (await api.program.exists(programId)) {
-      // throw new Error("Program not found");
-      // console.log("Program not found");
       break;
     }
   }
@@ -124,6 +132,21 @@ async function makePayload(programId: string) {
   return params;
 }
 
+async function codeHash(id: HexString): Promise<HexString> {
+  const programOption =
+    (await api.query.gearProgram.programStorage(id)) as Option<ProgramMap>;
+
+  if (programOption.isNone) throw new ProgramDoesNotExistError();
+
+  const program = programOption.unwrap()[0];
+
+  if (program.isTerminated) throw new ProgramTerminatedError(id);
+
+  if (program.isExited) throw new ProgramExitedError(program.asExited.toHex());
+
+  return program.asActive.codeHash.toHex();
+}
+
 async function init() {
   let dotenv = config();
 
@@ -132,6 +155,16 @@ async function init() {
   let RPC_NODE = Deno.env.get("RPC_NODE") || dotenv.RPC_NODE ||
     `wss://rpc-node.gear-tech.io`;
   let DEV_KEY = Deno.env.get("DEV_KEY") || dotenv.DEV_KEY || "//Alice";
+  let INIT_PAYLOAD = parseJSON(
+    Deno.env.get("INIT_PAYLOAD") || dotenv.INIT_PAYLOAD || "null",
+  );
+
+  let metadata = await meta();
+  if (INIT_PAYLOAD === null && metadata.types.init.input !== null) {
+    throw Error(
+      "Your contract requires an init input, but INIT_PAYLOAD is null. Deployment might fail!",
+    );
+  }
 
   console.log("Package Name:", PROGRAM_NAME);
 
@@ -145,12 +178,17 @@ async function init() {
   return {
     PROGRAM_NAME,
     RPC_NODE,
+    INIT_PAYLOAD,
     api,
     alice,
   };
 }
 
-let { PROGRAM_NAME, RPC_NODE, alice, api } = await init();
+let { PROGRAM_NAME, RPC_NODE, INIT_PAYLOAD, alice, api } = await init();
+
+async function checkProgram(programId: HexString) {
+  await codeHash(programId);
+}
 
 async function main() {
   await cargoBuild();
@@ -182,3 +220,15 @@ async function main() {
 }
 
 main().then(() => Deno.exit(0));
+
+function parseJSON(str: string): any | null {
+  if (str.length === 0) {
+    return null;
+  }
+  try {
+    return JSON.parse(str);
+  } catch (error) {
+    console.error("Failed to parse JSON:", error);
+    return null;
+  }
+}
