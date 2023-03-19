@@ -1,6 +1,9 @@
-import { walkSync } from "https://deno.land/std/fs/mod.ts";
+import { existsSync, walkSync } from "https://deno.land/std/fs/mod.ts";
 
 function listMatchingFiles(pattern: RegExp, path: string): string[] {
+  if (!existsSync(path)) {
+    return [];
+  }
   let results = [];
   for (
     const entry of walkSync(path, { match: [pattern], includeDirs: false })
