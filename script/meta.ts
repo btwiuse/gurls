@@ -16,7 +16,11 @@ export function metaHashU8a(): Uint8Array {
   return new Uint8Array(JSON.parse(Deno.readTextFileSync(".metahash")));
 }
 
-export const metaHex = u8aToHex(metaTxtU8a());
-export const meta = getProgramMetadata(metaHex);
+export async function metaHex() {
+  return u8aToHex(metaTxtU8a());
+}
+export async function meta() {
+  return getProgramMetadata(await metaHex());
+}
 
 // console.log(JSON.stringify(meta, "", "  "));

@@ -9,7 +9,7 @@ import { postMetadata } from "./postMetadata.ts";
 import { meta, metaHex } from "./meta.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { metaVerify } from "./verify.ts";
-import { code } from "./code.ts";
+import { code, ensureRelease } from "./code.ts";
 
 function packageName(): string {
   let cargoToml = Deno.readTextFileSync("Cargo.toml");
@@ -29,12 +29,12 @@ async function uploadProgram(): string {
     code: await code(),
     gasLimit: 1000000000,
     value: 0,
-    initPayload: "0x00",
+    // initPayload: "0x00",
   };
 
   let { codeId } = await api.program.upload(
     program,
-    meta,
+    // meta,
   );
 
   if (!await api.code.exists(codeId)) {
@@ -68,7 +68,7 @@ async function deployProgram(codeId: string) {
     "0x00",
     0,
     true,
-    meta,
+    await meta(),
   );
   // console.log(`GasLimit: ${gas}\n`);
 
@@ -76,7 +76,7 @@ async function deployProgram(codeId: string) {
     codeId,
     initPayload: "0x00",
     gasLimit: gas.min_limit,
-  }, meta);
+  }, await meta());
 
   // console.log({ codeId, programId });
 
@@ -100,19 +100,19 @@ async function deployProgram(codeId: string) {
 
 async function makePayload(programId: string) {
   for (let i = 0; i < 10; i++) {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     // assert program exists
     if (await api.program.exists(programId)) {
       // throw new Error("Program not found");
       // console.log("Program not found");
-      break
+      break;
     }
   }
 
   let genesis = api.genesisHash.toHex();
   let params = {
     genesis,
-    metaHex,
+    metaHex: await metaHex(),
     programId,
     name: PROGRAM_NAME,
   };
@@ -148,6 +148,8 @@ async function init() {
 let { PROGRAM_NAME, RPC_NODE, alice, api } = await init();
 
 async function main() {
+  await ensureRelease();
+
   console.info("Verifying metadata...");
   metaVerify();
 
