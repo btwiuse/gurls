@@ -21,8 +21,10 @@ import { metaVerify } from "./verify.ts";
 import { code } from "./code.ts";
 
 async function cargoBuild() {
-  let p = Deno.run({ cmd: ["cargo", "build", "--release"] });
-  await p.status();
+  let cmd = ["cargo", "build", "--release"];
+  let p = Deno.run({ cmd });
+  let { code } = await p.status();
+  throw Error(`Command '${cmd.join(" ")}' exited with code ${code}`);
 }
 
 function packageName(): string {
