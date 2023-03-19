@@ -100,11 +100,12 @@ async function deployProgram(codeId: string) {
 
 async function makePayload(programId: string) {
   for (let i = 0; i < 10; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     // assert program exists
-    if (!await api.program.exists(programId)) {
+    if (await api.program.exists(programId)) {
       // throw new Error("Program not found");
-      console.log("Program not found");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // console.log("Program not found");
+      break
     }
   }
 
