@@ -17,19 +17,21 @@ function getWasmCode(): Uint8Array {
   let results = optWasmPaths();
 
   if (results.length === 0) {
-    throw Error(`no matching file found within ${path}`);
+    throw Error(`no matching file found within ${directoryPath}`);
   }
   if (results.length > 1) {
-    throw Error(`multiple matching file found within ${path}: ${results}`);
+    throw Error(
+      `multiple matching file found within ${directoryPath}: ${results}`,
+    );
   }
 
   return Deno.readFileSync(results[0]);
 }
 
-function optWasmPaths(): string[] {
-  const directoryPath = "./target/wasm32-unknown-unknown/release";
-  const wasmFilePattern = /.*\.opt\.wasm$/;
+const directoryPath = "./target/wasm32-unknown-unknown/release";
+const wasmFilePattern = /.*\.opt\.wasm$/;
 
+function optWasmPaths(): string[] {
   let results = listMatchingFiles(wasmFilePattern, directoryPath);
   return results;
 }
