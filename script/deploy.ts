@@ -24,7 +24,9 @@ async function cargoBuild() {
   let cmd = ["cargo", "build", "--release"];
   let p = Deno.run({ cmd });
   let { code } = await p.status();
-  throw Error(`Command '${cmd.join(" ")}' exited with code ${code}`);
+  if (code !== 0) {
+    throw Error(`Command '${cmd.join(" ")}' exited with code ${code}`);
+  }
 }
 
 function packageName(): string {
