@@ -10,11 +10,8 @@ function listMatchingFiles(pattern: RegExp, path: string): string[] {
   return results;
 }
 
-function getWasmCode(): string {
-  const directoryPath = "./target/wasm32-unknown-unknown/release";
-  const wasmFilePattern = /.*\.opt\.wasm$/;
-
-  let results = listMatchingFiles(wasmFilePattern, directoryPath);
+function getWasmCode(): Uint8Array {
+  let results = optWasmPaths();
 
   if (results.length === 0) {
     throw Error(`no matching file found within ${path}`);
@@ -26,4 +23,24 @@ function getWasmCode(): string {
   return Deno.readFileSync(results[0]);
 }
 
-export const code = getWasmCode();
+function optWasmPaths(): string[] {
+  const directoryPath = "./target/wasm32-unknown-unknown/release";
+  const wasmFilePattern = /.*\.opt\.wasm$/;
+
+  let results = listMatchingFiles(wasmFilePattern, directoryPath);
+  return results;
+}
+
+async function ensureRelease() {
+  let results = optWasmPaths();
+
+  if (results.length === 0) {
+    let p = Deno.run({ cmd: ["cargo", "build", "--release"] });
+    await p.status();
+  }
+}
+
+export async function code() {
+  await ensureRelease();
+  return getWasmCode();
+}

@@ -7,9 +7,9 @@ import {
 // import { waitForInit } from "./waitForInit.ts";
 import { postMetadata } from "./postMetadata.ts";
 import { meta, metaHex } from "./meta.ts";
-import { code } from "./code.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { metaVerify } from "./verify.ts";
+import { code } from "./code.ts";
 
 function packageName(): string {
   let cargoToml = Deno.readTextFileSync("Cargo.toml");
@@ -26,7 +26,7 @@ async function initGearApi(RPC_NODE: string) {
 
 async function uploadProgram(): string {
   let program = {
-    code,
+    code: await code(),
     gasLimit: 1000000000,
     value: 0,
     initPayload: "0x00",
