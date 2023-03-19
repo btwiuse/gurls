@@ -34,18 +34,6 @@ function optWasmPaths(): string[] {
   return results;
 }
 
-export async function ensureRelease() {
-  let results = optWasmPaths();
-
-  if (
-    results.length === 0 || !existsSync(".metahash") || !existsSync("meta.txt")
-  ) {
-    let p = Deno.run({ cmd: ["cargo", "build", "--release"] });
-    await p.status();
-  }
-}
-
 export async function code() {
-  await ensureRelease();
   return getWasmCode();
 }

@@ -9,7 +9,12 @@ import { postMetadata } from "./postMetadata.ts";
 import { meta, metaHex } from "./meta.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { metaVerify } from "./verify.ts";
-import { code, ensureRelease } from "./code.ts";
+import { code } from "./code.ts";
+
+async function cargoBuild() {
+  let p = Deno.run({ cmd: ["cargo", "build", "--release"] });
+  await p.status();
+}
 
 function packageName(): string {
   let cargoToml = Deno.readTextFileSync("Cargo.toml");
@@ -148,7 +153,7 @@ async function init() {
 let { PROGRAM_NAME, RPC_NODE, alice, api } = await init();
 
 async function main() {
-  await ensureRelease();
+  await cargoBuild();
 
   console.info("Verifying metadata...");
   metaVerify();
