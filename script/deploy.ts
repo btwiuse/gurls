@@ -1,57 +1,86 @@
+import { parse } from "https://deno.land/std/encoding/toml.ts";
 import {
   decodeAddress,
   GearApi,
   GearKeyring,
-  getWasmMetadata,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
 // import { waitForInit } from "./waitForInit.ts";
 import { postMetadata } from "./postMetadata.ts";
-import { code, meta, metaHex } from "../dist/mod.ts";
+import { meta, metaHex } from "./meta.ts";
+import { code } from "./code.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { metaVerify } from "./verify.ts";
 
-let { RPC_NODE, PROGRAM_NAME } = config();
+function packageName(): string {
+  let cargoToml = Deno.readTextFileSync("Cargo.toml");
+  const parsedToml = parse(cargoToml) as { [key: string]: any };
+  const packageName = parsedToml["package"]["name"];
+  return packageName;
+}
 
-async function initGearApi() {
+async function initGearApi(RPC_NODE: string) {
   return await GearApi.create({
     providerAddress: RPC_NODE,
   });
 }
 
-console.log(`api (${RPC_NODE}) is initializing. Please hold on...`);
+async function uploadProgram(): string {
+  let program = {
+    code,
+    gasLimit: 1000000000,
+    value: 0,
+    initPayload: "0x00",
+  };
 
-let api = await initGearApi();
+  let { codeId } = await api.program.upload(
+    program,
+    meta,
+  );
 
-// alice
-let alice = await GearKeyring.fromSuri("//Alice");
-let aliceHex = decodeAddress(alice.address);
-
-// get free balance
-async function showFreeBalance(api: GearApi, address: string) {
-  let { data: { free } } = await api.query.system.account(address);
-  console.log(`${address}'s free balance:`, free.toHuman());
+  if (!await api.code.exists(codeId)) {
+    // console.log("CodeID not found, uploading...");
+    await new Promise((resolve, reject) => {
+      api.program.signAndSend(alice, ({ events, status }) => {
+        // console.log(`STATUS: ${status.toString()}`);
+        if (status.isFinalized) {
+          resolve(status.asFinalized);
+        }
+        events.forEach(({ event }) => {
+          if (event.method === "ExtrinsicFailed") {
+            reject(api.getExtrinsicFailedError(event).docs.join("\n"));
+          }
+        });
+      });
+    });
+  } else {
+    // console.log("CodeID already exists, skipping upload...");
+  }
+  return codeId;
 }
 
-await showFreeBalance(api, alice.address);
+async function deployProgram(codeId: string) {
+  let aliceHex = decodeAddress(alice.address);
+  // console.log("decodedAddress:", aliceHex);
 
-console.log("decodedAddress:", aliceHex);
+  let gas = await api.program.calculateGas.initCreate(
+    aliceHex,
+    codeId,
+    "0x00",
+    0,
+    true,
+    meta,
+  );
+  // console.log(`GasLimit: ${gas}\n`);
 
-console.log("Deploying program...");
+  let { programId, extrinsic } = api.program.create({
+    codeId,
+    initPayload: "0x00",
+    gasLimit: gas.min_limit,
+  }, meta);
 
-let program = {
-  code,
-  gasLimit: 1000000000,
-  value: 0,
-  initPayload: "0x00",
-};
+  // console.log({ codeId, programId });
 
-let { codeId } = await api.program.upload(
-  program,
-  meta,
-);
-
-if (!await api.code.exists(codeId)) {
-  console.log("CodeID not found, uploading...");
-  await new Promise((resolve, reject) => {
+  let out = await new Promise((resolve, reject) => {
     api.program.signAndSend(alice, ({ events, status }) => {
       // console.log(`STATUS: ${status.toString()}`);
       if (status.isFinalized) {
@@ -64,77 +93,84 @@ if (!await api.code.exists(codeId)) {
       });
     });
   });
-} else {
-  console.log("CodeID already exists, skipping upload...");
+
+  // console.log(out);
+  return programId;
 }
 
-let gas = await api.program.calculateGas.initCreate(
-  aliceHex,
-  codeId,
-  "0x00",
-  0,
-  true,
-  meta,
-);
-// console.log(`GasLimit: ${gas}\n`);
-
-let { programId, extrinsic } = api.program.create({
-  codeId,
-  initPayload: "0x00",
-  gasLimit: gas.min_limit,
-}, meta);
-
-console.log({ codeId, programId });
-
-let out = await new Promise((resolve, reject) => {
-  api.program.signAndSend(alice, ({ events, status }) => {
-    // console.log(`STATUS: ${status.toString()}`);
-    if (status.isFinalized) {
-      resolve(status.asFinalized);
+async function makePayload(programId: string) {
+  for (let i = 0; i < 10; i++) {
+    // assert program exists
+    if (!await api.program.exists(programId)) {
+      // throw new Error("Program not found");
+      console.log("Program not found");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    events.forEach(({ event }) => {
-      if (event.method === "ExtrinsicFailed") {
-        reject(api.getExtrinsicFailedError(event).docs.join("\n"));
-      }
-    });
-  });
-});
-
-console.log(out);
-
-// await waitForInit(api, programId);
-
-console.log("Posting metadata...");
-
-for (let i = 0; i < 10; i++) {
-  // assert program exists
-  if (!await api.program.exists(programId)) {
-    // throw new Error("Program not found");
-    console.log("Program not found");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
+
+  let genesis = api.genesisHash.toHex();
+  let params = {
+    genesis,
+    metaHex,
+    programId,
+    name: PROGRAM_NAME,
+  };
+  return params;
 }
 
-let resp = await postMetadata(api, alice, metaHex, programId, PROGRAM_NAME);
+async function init() {
+  let dotenv = config();
 
-console.log(resp);
+  let PROGRAM_NAME = Deno.env.get("PROGRAM_NAME") || dotenv.PROGRAM_NAME ||
+    packageName() || "unknown";
+  let RPC_NODE = Deno.env.get("RPC_NODE") || dotenv.RPC_NODE ||
+    `wss://rpc-node.gear-tech.io`;
+  let DEV_KEY = Deno.env.get("DEV_KEY") || dotenv.DEV_KEY || "//Alice";
 
-console.log(
-  "Program deloyed:",
-  `https://idea.gear-tech.io/programs/${programId}?node=${RPC_NODE}`,
-);
+  console.log("Package Name:", PROGRAM_NAME);
 
-Deno.writeTextFileSync(
-  "./dist/deploy.json",
-  JSON.stringify(
-    {
-      codeId,
-      programId,
-      RPC_NODE,
-    },
-    null,
-    "  ",
-  ),
-);
+  console.log(`api (${RPC_NODE}) is initializing. Please hold on...`);
+  let api = await initGearApi(RPC_NODE);
 
-Deno.exit(0);
+  let alice = await GearKeyring.fromSuri(DEV_KEY);
+  let { data: { free } } = await api.query.system.account(alice.address);
+  console.log(`Dev key: ${alice.address}; free balance:`, free.toHuman());
+
+  return {
+    PROGRAM_NAME,
+    RPC_NODE,
+    api,
+    alice,
+  };
+}
+
+let { PROGRAM_NAME, RPC_NODE, alice, api } = await init();
+
+async function main() {
+  console.info("Verifying metadata...");
+  metaVerify();
+
+  console.info("Uploading program...");
+  let codeId = await uploadProgram();
+  console.info({ codeId });
+
+  console.info("Deploying program...");
+  let programId = await deployProgram(codeId);
+  console.info({ programId });
+
+  console.info("Making payload...");
+  let params = await makePayload(programId);
+  console.info(params);
+
+  console.info("Posting metadata...");
+  let resp = await postMetadata(params);
+  console.info(resp);
+
+  console.info(
+    "Program deloyed:",
+    `https://idea.gear-tech.io/programs/${programId}?node=${RPC_NODE}`,
+  );
+  // Deno.writeTextFileSync( "./dist/deploy.json", JSON.stringify( { codeId, programId, RPC_NODE, }, null, "  ",),);
+}
+
+main().then(() => Deno.exit(0));

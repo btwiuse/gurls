@@ -28,7 +28,10 @@ async function main() {
 
   console.log({ programId: deploy.programId, meta, query });
 
-  const result = await api.programState.read({ programId: deploy.programId}, meta);
+  const result = await api.programState.read(
+    { programId: deploy.programId },
+    meta,
+  );
 
   console.log("result:", result.toHuman());
 }

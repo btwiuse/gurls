@@ -10,7 +10,7 @@ expand:
 	cargo expand > dist/lib.expanded.rs
 
 deploy: build
-	deno run -A --unsafely-ignore-certificate-errors script/deploy.ts
+	deno run -A script/deploy.ts
 
 build:
 	mkdir -p dist
@@ -22,7 +22,7 @@ build:
 	cat meta.txt | jq -R | jq '"0x\(.)"' > dist/meta.txt.json
 	cat dist/meta.wasm | base64 -w0 | jq -R . > dist/meta.wasm.base64.json
 	cat dist/opt.wasm | base64 -w0 | jq -R . > dist/opt.wasm.base64.json
-	deno run -A script/meta.ts > dist/meta.json
+	# deno run -A script/meta.ts > dist/meta.json
 	cp script/mod.ts dist/mod.ts
 	node esbuild.config.mjs
 
