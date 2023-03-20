@@ -163,13 +163,6 @@ async function init() {
     Deno.env.get("INIT_PAYLOAD") || dotenv.INIT_PAYLOAD || "null",
   );
 
-  let metadata = await meta();
-  if (INIT_PAYLOAD === null && metadata.types.init.input !== null) {
-    throw Error(
-      "Your contract requires an init input, but INIT_PAYLOAD is null. Deployment might fail!",
-    );
-  }
-
   console.log("Package Name:", PROGRAM_NAME);
 
   console.log(`api (${RPC_NODE}) is initializing. Please hold on...`);
@@ -194,8 +187,18 @@ async function checkProgram(programId: HexString) {
   await codeHash(programId);
 }
 
+async function checkInit(){
+  let metadata = await meta();
+  if (INIT_PAYLOAD === null && metadata.types.init.input !== null) {
+    throw Error(
+      "Your contract requires an init input, but INIT_PAYLOAD is null. Deployment might fail!",
+    );
+  }
+}
+
 async function main() {
   await cargoBuild();
+  await checkInit();
 
   console.info("Verifying metadata...");
   metaVerify();
