@@ -161,7 +161,7 @@ async function init() {
   let DEV_KEY = Deno.env.get("DEV_KEY") || dotenv.DEV_KEY || "//Alice";
   let INIT_PAYLOAD = parseJSON(
     Deno.env.get("INIT_PAYLOAD") || dotenv.INIT_PAYLOAD || "null",
-  );
+  ) || "0x00";
 
   console.log("Package Name:", PROGRAM_NAME);
 
@@ -187,7 +187,7 @@ async function checkProgram(programId: HexString) {
   await codeHash(programId);
 }
 
-async function checkInit(){
+async function checkInit() {
   let metadata = await meta();
   if (INIT_PAYLOAD === null && metadata.types.init.input !== null) {
     throw Error(

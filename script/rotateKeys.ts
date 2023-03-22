@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run -A
 
-const RPC_NODE = "http://127.0.0.1:9933"
+const RPC_NODE = "http://127.0.0.1:9933";
 
 async function request(method: string, params: any) {
   const response = await fetch(RPC_NODE, {
@@ -19,4 +19,4 @@ async function request(method: string, params: any) {
   return responseData;
 }
 
-console.log(JSON.stringify(await request('author_rotateKeys', [])))
+console.log(JSON.stringify(await request("author_rotateKeys", [])));
