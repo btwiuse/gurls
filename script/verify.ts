@@ -1,12 +1,12 @@
-import { HexString } from "https://deno.land/x/polkadot@0.2.32/util/types.ts";
+import { HexString } from "https://deno.land/x/polkadot@0.2.33/util/types.ts";
 import {
   hexToU8a,
   u8aToHex,
-} from "https://deno.land/x/polkadot@0.2.32/util/index.ts";
+} from "https://deno.land/x/polkadot@0.2.33/util/index.ts";
 import {
   blake2AsHex,
   blake2AsU8a,
-} from "https://deno.land/x/polkadot@0.2.32/util-crypto/index.ts";
+} from "https://deno.land/x/polkadot@0.2.33/util-crypto/index.ts";
 import { metaHashU8a, metaTxtU8a } from "./meta.ts";
 
 export function metaTxtHash(): HexString {

@@ -5,8 +5,8 @@ import {
   SubmitProgramError,
 } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/errors/index.ts";
 import { ProgramMap } from "https://github.com/btwiuse/gear-js/raw/deno/api/src/types/interfaces/index.ts";
-import { Option } from "https://deno.land/x/polkadot@0.2.32/types/index.ts";
-import { HexString } from "https://deno.land/x/polkadot@0.2.32/util/types.ts";
+import { Option } from "https://deno.land/x/polkadot@0.2.33/types/index.ts";
+import { HexString } from "https://deno.land/x/polkadot@0.2.33/util/types.ts";
 import { parse } from "https://deno.land/std/encoding/toml.ts";
 import {
   decodeAddress,
