@@ -10,17 +10,17 @@ expand:
 	cargo expand > dist/lib.expanded.rs
 
 deploy: build
-	deno run -A script/deploy.ts
+	deno run -A https://gear.deno.dev/deploy.ts
 
 build:
 	mkdir -p dist
 	file dist/deploy.json || echo '{}' > dist/deploy.json
 	cargo build --release
 	cp -v target/wasm32-unknown-unknown/release/$(PKG).opt.wasm dist/opt.wasm
-	cp -v target/wasm32-unknown-unknown/release/$(PKG).meta.wasm dist/meta.wasm
+	# cp -v target/wasm32-unknown-unknown/release/$(PKG).meta.wasm dist/meta.wasm
 	cp -v meta.txt dist/meta.txt
 	cat meta.txt | jq -R | jq '"0x\(.)"' > dist/meta.txt.json
-	cat dist/meta.wasm | base64 -w0 | jq -R . > dist/meta.wasm.base64.json
+	# cat dist/meta.wasm | base64 -w0 | jq -R . > dist/meta.wasm.base64.json
 	cat dist/opt.wasm | base64 -w0 | jq -R . > dist/opt.wasm.base64.json
 	# deno run -A script/meta.ts > dist/meta.json
 	cp script/mod.ts dist/mod.ts
