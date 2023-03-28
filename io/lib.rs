@@ -1,4 +1,3 @@
-#![feature(map_try_insert)]
 #![no_std]
 
 use gstd::prelude::*;
@@ -11,9 +10,11 @@ pub struct Contract(pub BTreeMap<String, String>);
 
 impl Contract {
     pub fn add_url(&mut self, code: String, url: String) {
-        self.0
-            .try_insert(code, url)
-            .expect("failed to add url: code exists");
+        if self.0.contains_key(&code) {
+            panic!("failed to add url: code exists");
+        } else {
+            self.0.insert(code, url);
+        }
     }
     pub fn get_url(&self, code: String) -> Option<String> {
         self.0.get(&code).cloned()
