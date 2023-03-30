@@ -7,12 +7,12 @@ edition = "2021"
 path = "lib.rs"
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master", features = ["codegen"] }
+gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["codegen"] }
 io = { workspace = true }
 
 [build-dependencies]
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master", features = ["metawasm"] }
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["metawasm"] }
 
 [features]
 binary-vendor = []
