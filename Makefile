@@ -9,7 +9,7 @@ init:
 expand:
 	cargo expand > dist/lib.expanded.rs
 
-deploy: build
+deploy:
 	deno run -A https://gear.deno.dev/deploy.ts
 
 build:
