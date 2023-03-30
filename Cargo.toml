@@ -15,10 +15,19 @@ gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
 gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
 scale-info = { version = "2", default-features = false }
 parity-scale-codec = { version = "3", default-features = false }
-io = { path = "io" }
+io = { workspace = true }
 
 [build-dependencies]
 gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-io = { path = "io" }
+io = { workspace = true }
 
-# [workspace] members = [ "io" ]
+[workspace]
+members = [
+ "io",
+ "state",
+]
+
+
+[workspace.dependencies]
+io = { path = "io" }
+state = { path = "state" }
