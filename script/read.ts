@@ -1,8 +1,6 @@
 #!/usr/bin/env -S deno run -A
 import {
-  decodeAddress,
   GearApi,
-  GearKeyring,
   getProgramMetadata,
 } from "https://gear-js.deno.dev/api/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
