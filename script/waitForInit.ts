@@ -4,7 +4,7 @@ import {
   MessageEnqueued,
   ProgramChanged,
   UserMessageSent,
-} from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
+} from "https://gear-js.deno.dev/api/index.ts";
 import { UnsubscribePromise } from "https://deno.land/x/polkadot/api/types/index.ts";
 
 export function waitForInit(

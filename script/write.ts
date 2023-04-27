@@ -4,10 +4,14 @@ import {
   GearApi,
   GearKeyring,
   getProgramMetadata,
-} from "https://github.com/btwiuse/gear-js/raw/deno/api/index.ts";
+} from "https://gear-js.deno.dev/api/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import deploy from "../dist/deploy.json" assert { type: "json" };
 import { metaHex } from "../dist/mod.ts";
+
+const deploy = {
+  programId: '0x78d61422cebfdc62cdad97e338f4660b0368100ed2412db19dc42fc00964f826',
+};
 
 const meta = getProgramMetadata(metaHex);
 
