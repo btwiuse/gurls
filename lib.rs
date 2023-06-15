@@ -6,10 +6,13 @@ use io::*;
 // contract state
 static mut STATE: Option<Contract> = None;
 
+static mut STATE2: i64 = 0xdeadbeef;
+
 // what this line says is "here is a C function written in Rust"
 #[no_mangle]
 unsafe extern "C" fn init() {
     STATE = Some(Contract::default());
+    STATE2 = 0xdeadbeef;
 }
 
 #[no_mangle]
@@ -28,10 +31,4 @@ unsafe extern "C" fn handle() {
 extern "C" fn state() {
     let state = unsafe { STATE.as_ref().expect("failed to get contract state") };
     gstd::msg::reply(state.clone(), 0).expect("Failed to share state");
-}
-
-#[no_mangle]
-extern "C" fn metahash() {
-    let metahash: [u8; 32] = include!(".metahash");
-    gstd::msg::reply(metahash, 0).expect("Failed to share metahash");
 }

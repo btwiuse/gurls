@@ -11,14 +11,14 @@ path = "lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "dn-revert-alloc-handling" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "dn-revert-alloc-handling" }
+gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
 scale-info = { version = "2", default-features = false }
 parity-scale-codec = { version = "3", default-features = false }
 io = { workspace = true }
 
 [build-dependencies]
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "dn-revert-alloc-handling" }
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
 io = { workspace = true }
 
 [workspace]
