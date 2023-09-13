@@ -7,8 +7,8 @@ edition = "2021"
 path = "lib.rs"
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master", features = ["codegen"] }
+gstd = { workspace = true }
+gmeta = { workspace = true }
 io = { workspace = true }
 
 [build-dependencies]

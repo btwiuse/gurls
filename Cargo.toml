@@ -11,14 +11,12 @@ path = "lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-scale-info = { version = "2", default-features = false }
-parity-scale-codec = { version = "3", default-features = false }
+gstd = { workspace = true }
+gmeta = { workspace = true }
 io = { workspace = true }
 
 [build-dependencies]
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+gear-wasm-builder = { workspace = true }
 io = { workspace = true }
 
 [workspace]
@@ -31,3 +29,8 @@ members = [
 [workspace.dependencies]
 io = { path = "io" }
 state = { path = "state" }
+gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+scale-info = { version = "2", default-features = false }
+parity-scale-codec = { version = "3", default-features = false }
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }

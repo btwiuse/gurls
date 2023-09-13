@@ -1,11 +1,9 @@
 #![no_std]
 
 use gstd::prelude::*;
+use gstd::collections::*;
 
-use parity_scale_codec::{Decode, Encode};
-use scale_info::TypeInfo;
-
-#[derive(Default, Encode, Decode, TypeInfo)]
+#[derive(Clone, Default, Encode, Decode, TypeInfo)]
 pub struct Contract(pub BTreeMap<String, String>);
 
 impl Contract {
@@ -31,6 +29,18 @@ pub enum Event {
     Added { code: String, url: String },
 }
 
+#[derive(Debug, Clone, Encode, Decode, TypeInfo)]
+pub enum Query {
+    All,
+    Code(String),
+}
+
+#[derive(Encode, Decode, TypeInfo)]
+pub enum Reply {
+    All(Contract),
+    Url(Option<String>),
+}
+
 use gmeta::{InOut, Metadata};
 
 pub struct ProgramMetadata;
@@ -41,6 +51,5 @@ impl Metadata for ProgramMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    // type State = BTreeMap<String, String>;
-    type State = Contract;
+    type State = InOut<Query, Reply>;
 }

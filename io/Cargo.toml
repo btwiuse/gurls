@@ -8,7 +8,7 @@ edition = "2021"
 path = "lib.rs"
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-scale-info = { version = "2", default-features = false }
-parity-scale-codec = { version = "3", default-features = false }
+gstd = { workspace = true }
+gmeta = { workspace = true }
+scale-info = { workspace = true }
+parity-scale-codec = { workspace = true }

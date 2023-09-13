@@ -29,6 +29,14 @@ unsafe extern "C" fn handle() {
 
 #[no_mangle]
 extern "C" fn state() {
+    let query = gstd::msg::load().expect("failed to load query");
     let state = unsafe { STATE.as_ref().expect("failed to get contract state") };
-    gstd::msg::reply(state.clone(), 0).expect("Failed to share state");
+    match query {
+        Query::All => {
+            gstd::msg::reply(Reply::All(state.clone()), 0).expect("Failed to share state");
+        }
+        Query::Code(code) => {
+            gstd::msg::reply(Reply::Url(state.get_url(code)), 0).expect("Failed to share state");
+        }
+    }
 }
