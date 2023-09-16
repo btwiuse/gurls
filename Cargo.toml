@@ -22,13 +22,10 @@ io = { workspace = true }
 [workspace]
 members = [
  "io",
- "state",
 ]
-
 
 [workspace.dependencies]
 io = { path = "io" }
-state = { path = "state" }
 gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
 gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
 scale-info = { version = "2", default-features = false }
