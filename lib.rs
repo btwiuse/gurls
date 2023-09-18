@@ -1,7 +1,7 @@
 #![no_std]
 
 use gstd::prelude::*;
-use io::*;
+use io::{Contract, ProgramMetadata};
 
 // contract state
 static mut STATE: Option<Contract> = None;
@@ -14,9 +14,14 @@ extern "C" fn init() {
 
 #[no_mangle]
 extern "C" fn handle() {
-    let state = unsafe { STATE.as_mut().expect("failed to get state as mut") };
+    // use io::{Action, Event};
+    type Handle = <ProgramMetadata as gmeta::Metadata>::Handle;
+    type Action = <Handle as gmeta::Types>::Input;
+    type Event = <Handle as gmeta::Types>::Output;
+
+    let state: &mut Contract = unsafe { STATE.as_mut().expect("failed to get state as mut") };
     let action: Action = gstd::msg::load().expect("failed to load action");
-    let event = match action {
+    let event: Event = match action {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
             Event::Added { code, url }
@@ -27,9 +32,14 @@ extern "C" fn handle() {
 
 #[no_mangle]
 extern "C" fn state() {
-    let query = gstd::msg::load().expect("failed to load query");
-    let state = unsafe { STATE.as_ref().expect("failed to get contract state") };
-    let reply = match query {
+    // use io::{Query, Reply};
+    type State = <ProgramMetadata as gmeta::Metadata>::State;
+    type Query = <State as gmeta::Types>::Input;
+    type Reply = <State as gmeta::Types>::Output;
+
+    let state: &Contract = unsafe { STATE.as_ref().expect("failed to get contract state") };
+    let query: Query = gstd::msg::load().expect("failed to load query");
+    let reply: Reply = match query {
         Query::All => Reply::All(state.clone()),
         Query::Code(code) => Reply::Url(state.get_url(code)),
         Query::Whoami => Reply::Whoami(gstd::msg::source()), // all zero addr

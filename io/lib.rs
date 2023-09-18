@@ -1,7 +1,7 @@
 #![no_std]
 
 use gmeta::{InOut, Metadata};
-use gstd::collections::*;
+use gstd::collections::{btree_map::Entry, BTreeMap};
 use gstd::prelude::*;
 use gstd::ActorId;
 use gstd::MessageId;
@@ -22,10 +22,13 @@ pub struct Contract(pub BTreeMap<String, String>);
 
 impl Contract {
     pub fn add_url(&mut self, code: String, url: String) {
-        if self.0.contains_key(&code) {
-            panic!("failed to add url: code exists");
-        } else {
-            self.0.insert(code, url);
+        match self.0.entry(code) {
+            Entry::Vacant(v) => {
+                v.insert(url);
+            }
+            Entry::Occupied(_) => {
+                panic!("failed to add url: code exists")
+            }
         }
     }
     pub fn get_url(&self, code: String) -> Option<String> {
