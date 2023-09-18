@@ -6,18 +6,15 @@ use io::*;
 // contract state
 static mut STATE: Option<Contract> = None;
 
-static mut STATE2: i64 = 0xdeadbeef;
-
 // what this line says is "here is a C function written in Rust"
 #[no_mangle]
-unsafe extern "C" fn init() {
-    STATE = Some(Contract::default());
-    STATE2 = 0xdeadbeef;
+extern "C" fn init() {
+    unsafe { STATE = Some(Contract::default()) };
 }
 
 #[no_mangle]
-unsafe extern "C" fn handle() {
-    let state = STATE.as_mut().expect("failed to get state as mut");
+extern "C" fn handle() {
+    let state = unsafe { STATE.as_mut().expect("failed to get state as mut") };
     let action: Action = gstd::msg::load().expect("failed to load action");
     match action {
         Action::AddUrl { code, url } => {

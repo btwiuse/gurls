@@ -1,7 +1,19 @@
 #![no_std]
 
-use gstd::prelude::*;
+use gmeta::{InOut, Metadata};
 use gstd::collections::*;
+use gstd::prelude::*;
+
+pub struct ProgramMetadata;
+
+impl Metadata for ProgramMetadata {
+    type Init = ();
+    type Handle = InOut<Action, Event>;
+    type Others = ();
+    type Reply = ();
+    type Signal = ();
+    type State = InOut<Query, Reply>;
+}
 
 #[derive(Clone, Default, Encode, Decode, TypeInfo)]
 pub struct Contract(pub BTreeMap<String, String>);
@@ -39,17 +51,4 @@ pub enum Query {
 pub enum Reply {
     All(Contract),
     Url(Option<String>),
-}
-
-use gmeta::{InOut, Metadata};
-
-pub struct ProgramMetadata;
-
-impl Metadata for ProgramMetadata {
-    type Init = ();
-    type Handle = InOut<Action, Event>;
-    type Others = ();
-    type Reply = ();
-    type Signal = ();
-    type State = InOut<Query, Reply>;
 }
