@@ -16,12 +16,13 @@ extern "C" fn init() {
 extern "C" fn handle() {
     let state = unsafe { STATE.as_mut().expect("failed to get state as mut") };
     let action: Action = gstd::msg::load().expect("failed to load action");
-    match action {
+    let event = match action {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
-            gstd::msg::reply(Event::Added { code, url }, 0).expect("failed to reply");
+            Event::Added { code, url }
         }
-    }
+    };
+    gstd::msg::reply(event, 0).expect("failed to reply");
 }
 
 #[no_mangle]
