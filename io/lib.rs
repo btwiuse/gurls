@@ -3,6 +3,8 @@
 use gmeta::{InOut, Metadata};
 use gstd::collections::*;
 use gstd::prelude::*;
+use gstd::ActorId;
+use gstd::MessageId;
 
 pub struct ProgramMetadata;
 
@@ -45,10 +47,20 @@ pub enum Event {
 pub enum Query {
     All,
     Code(String),
+    Whoami,
+    BlockNumber,
+    BlockTimestamp,
+    ProgramId,
+    MessageId,
 }
 
 #[derive(Encode, Decode, TypeInfo)]
 pub enum Reply {
     All(Contract),
     Url(Option<String>),
+    Whoami(ActorId),
+    BlockNumber(u32),
+    BlockTimestamp(u64),
+    ProgramId(ActorId),
+    MessageId(MessageId),
 }

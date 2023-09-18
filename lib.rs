@@ -28,12 +28,14 @@ extern "C" fn handle() {
 extern "C" fn state() {
     let query = gstd::msg::load().expect("failed to load query");
     let state = unsafe { STATE.as_ref().expect("failed to get contract state") };
-    match query {
-        Query::All => {
-            gstd::msg::reply(Reply::All(state.clone()), 0).expect("Failed to share state");
-        }
-        Query::Code(code) => {
-            gstd::msg::reply(Reply::Url(state.get_url(code)), 0).expect("Failed to share state");
-        }
-    }
+    let reply = match query {
+        Query::All => Reply::All(state.clone()),
+        Query::Code(code) => Reply::Url(state.get_url(code)),
+        Query::Whoami => Reply::Whoami(gstd::msg::source()), // all zero addr
+        Query::BlockNumber => Reply::BlockNumber(gstd::exec::block_height()),
+        Query::BlockTimestamp => Reply::BlockTimestamp(gstd::exec::block_timestamp()),
+        Query::ProgramId => Reply::ProgramId(gstd::exec::program_id()),
+        Query::MessageId => Reply::MessageId(gstd::msg::id()), // all zero id
+    };
+    gstd::msg::reply(reply, 0).expect("Failed to share state");
 }
