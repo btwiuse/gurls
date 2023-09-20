@@ -1,7 +1,7 @@
 #![no_std]
 
 use gstd::prelude::*;
-use io::{Contract, ProgramMetadata};
+use io::Contract;
 
 // contract state
 static mut STATE: Option<Contract> = None;
@@ -9,13 +9,13 @@ static mut STATE: Option<Contract> = None;
 // what this line says is "here is a C function written in Rust"
 #[no_mangle]
 extern "C" fn init() {
-    unsafe { STATE = Some(Contract::default()) };
+    unsafe { STATE = Some(Contract::default()) }
 }
 
 #[no_mangle]
 extern "C" fn handle() {
     // use io::{Action, Event};
-    type Handle = <ProgramMetadata as gmeta::Metadata>::Handle;
+    type Handle = <Contract as gmeta::Metadata>::Handle;
     type Action = <Handle as gmeta::Types>::Input;
     type Event = <Handle as gmeta::Types>::Output;
 
@@ -33,7 +33,7 @@ extern "C" fn handle() {
 #[no_mangle]
 extern "C" fn state() {
     // use io::{Query, Reply};
-    type State = <ProgramMetadata as gmeta::Metadata>::State;
+    type State = <Contract as gmeta::Metadata>::State;
     type Query = <State as gmeta::Types>::Input;
     type Reply = <State as gmeta::Types>::Output;
 

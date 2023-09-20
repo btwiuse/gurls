@@ -6,9 +6,7 @@ use gstd::prelude::*;
 use gstd::ActorId;
 use gstd::MessageId;
 
-pub struct ProgramMetadata;
-
-impl Metadata for ProgramMetadata {
+impl Metadata for Contract {
     type Init = ();
     type Handle = InOut<Action, Event>;
     type Others = ();
