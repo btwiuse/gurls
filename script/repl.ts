@@ -1,7 +1,4 @@
-import {
-  GearApi,
-  GearKeyring,
-} from "https://gear-js.deno.dev/api/index.ts";
+import { GearApi, GearKeyring } from "https://gear-js.deno.dev/api/index.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 let { RPC_NODE } = config();

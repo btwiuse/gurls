@@ -9,7 +9,7 @@ import { UnsubscribePromise } from "https://deno.land/x/polkadot/api/types/index
 
 export function waitForInit(
   api: GearApi,
-  programId: string,
+  programId: string
 ): Promise<UnsubscribePromise> {
   let messageId: Hex;
   return new Promise((resolve, reject) => {
@@ -32,8 +32,10 @@ export function waitForInit(
               },
             } = event as UserMessageSent;
             if (
-              source.eq(programId) && reply.isSome &&
-              reply.unwrap()[0].eq(messageId) && reply.unwrap()[1].eq(1)
+              source.eq(programId) &&
+              reply.isSome &&
+              reply.unwrap()[0].eq(messageId) &&
+              reply.unwrap()[1].eq(1)
             ) {
               reject(payload.toHuman());
             }

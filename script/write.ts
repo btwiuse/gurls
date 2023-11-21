@@ -10,7 +10,8 @@ import deploy from "../dist/deploy.json" assert { type: "json" };
 import { metaHex } from "../dist/mod.ts";
 
 const deploy = {
-  programId: '0x78d61422cebfdc62cdad97e338f4660b0368100ed2412db19dc42fc00964f826',
+  programId:
+    "0x78d61422cebfdc62cdad97e338f4660b0368100ed2412db19dc42fc00964f826",
 };
 
 const meta = getProgramMetadata(metaHex);
@@ -47,7 +48,7 @@ async function main() {
     payload,
     0,
     true,
-    meta,
+    meta
   );
   console.log(`GasLimit: ${gas}\n`);
 

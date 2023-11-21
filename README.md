@@ -10,9 +10,7 @@ A URL shortener built on top of Deno Deploy and Gear, inspired by
 [goo.gl](https://goo.gl), [git.io](https://git.io),
 [yaus](https://github.com/denoland/deploy_examples/tree/main/yaus)
 
-- Backend API / SSR server:
-  [https://btwiuse/deploy_examples/blob/btwiuse/urls/mod.tsx](https://github.com/btwiuse/deploy_examples/blob/btwiuse/gurls/mod.tsx)
-- Frontend script / browser logic: [./gurls.ts](./gurls.ts)
+- Frontend script / browser logic: [./www/script.js](./script.js)
 - Contract: [./lib.rs](./lib.rs)
 
 ## Live Demo
@@ -21,18 +19,11 @@ A URL shortener built on top of Deno Deploy and Gear, inspired by
   `bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice`
 - RPC_NODE: `wss://rpc-node.gear-tech.io`
 - PROGRAM_ID:
-  [`0x69d6bf23daf0aae8561a106245c80a5545232b5277788ab00cbc408171985857`](https://idea.gear-tech.io/programs/0x69d6bf23daf0aae8561a106245c80a5545232b5277788ab00cbc408171985857?node=wss://rpc-node.gear-tech.io)
+  [`0x2b99cdff9640bfbe22bd505d945bafd7efe22c0ec302519d905ed37add15aefe`](https://idea.gear-tech.io/programs/0x2b99cdff9640bfbe22bd505d945bafd7efe22c0ec302519d905ed37add15aefe?node=wss://testnet.vara-network.io)
 
 Visit one of the links for a live version
 
-- https://gurls.deno.dev
-- https://gurls.up.railway.app
-- https://gurls.vercel.app (WIP)
-  - created by `npx create-gear-app`
-  - TODO: port to Next.js
-- http://127.0.0.1:3000
-  - run
-    `PORT=3000 deno run --allow-net --allow-env https://github.com/btwiuse/deploy_examples/raw/btwiuse/gurls/mod.tsx`
+- https://gurls.vercel.app
 
 ## Deploy
 

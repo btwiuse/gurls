@@ -8,7 +8,8 @@ import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { metaHex } from "../dist/mod.ts";
 
 const deploy = {
-  programId: '0x78d61422cebfdc62cdad97e338f4660b0368100ed2412db19dc42fc00964f826',
+  programId:
+    "0x78d61422cebfdc62cdad97e338f4660b0368100ed2412db19dc42fc00964f826",
 };
 
 const meta = getProgramMetadata(metaHex);
@@ -26,13 +27,13 @@ async function main() {
 
   const api = await initGearApi();
 
-  let query = { "Code": "wtf" };
+  let query = { Code: "wtf" };
 
   console.log({ programId: deploy.programId, meta, query });
 
   const result = await api.programState.read(
     { programId: deploy.programId },
-    meta,
+    meta
   );
 
   console.log("result:", result.toHuman());
