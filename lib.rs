@@ -26,6 +26,25 @@ extern "C" fn handle() {
             state.add_url(code.clone(), url.clone());
             Event::Added { code, url }
         }
+        Action::SendValue { to, value } => {
+            gstd::msg::send_bytes(to, [], value).expect("failed to send value");
+            Event::SentValue { to, value }
+        }
+        Action::SendValueTwice { to, value } => {
+            gstd::msg::send(
+                gstd::exec::program_id(),
+                Action::SendValue { to, value },
+                value,
+            )
+            .expect("failed to send value 1");
+            gstd::msg::send(
+                gstd::exec::program_id(),
+                Action::SendValue { to, value },
+                value,
+            )
+            .expect("failed to send value 2");
+            Event::SentValueTwice { to, value }
+        }
     };
     gstd::msg::reply(event, 0).expect("failed to reply");
 }

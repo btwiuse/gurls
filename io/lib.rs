@@ -36,12 +36,17 @@ impl Contract {
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Action {
+    SendValue { to: ActorId, value: u128 },
+    SendValueTwice { to: ActorId, value: u128 },
     AddUrl { code: String, url: String },
 }
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Event {
     Added { code: String, url: String },
+    Log(String),
+    SentValue { to: ActorId, value: u128 },
+    SentValueTwice { to: ActorId, value: u128 },
 }
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
