@@ -17,7 +17,8 @@ extern "C" fn handle() {
     // use io::{Action, Event};
     type Handle = <Contract as gmeta::Metadata>::Handle;
     type Action = <Handle as gmeta::Types>::Input;
-    type Event = <Handle as gmeta::Types>::Output;
+    type EventResult = <Handle as gmeta::Types>::Output;
+    use io::Event;
 
     let state: &mut Contract = unsafe { STATE.as_mut().expect("failed to get state as mut") };
     let action: Action = gstd::msg::load().expect("failed to load action");
@@ -56,7 +57,7 @@ extern "C" fn handle() {
         }
         Action::ValueAvailable => Event::ValueAvailable(gstd::exec::value_available()),
     };
-    gstd::msg::reply(event, 0).expect("failed to reply");
+    gstd::msg::reply(EventResult::Ok(event), 0).expect("failed to reply");
 }
 
 #[no_mangle]

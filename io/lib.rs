@@ -8,7 +8,7 @@ use gstd::MessageId;
 
 impl Metadata for Contract {
     type Init = ();
-    type Handle = InOut<Action, Event>;
+    type Handle = InOut<Action, Result<Event, ()>>;
     type Others = ();
     type Reply = ();
     type Signal = ();
