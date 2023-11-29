@@ -49,6 +49,12 @@ extern "C" fn handle() {
             let value = gstd::msg::value();
             Event::Deposited(value)
         }
+        Action::Withdraw => {
+            let value = gstd::exec::value_available();
+            gstd::msg::send_bytes(gstd::msg::source(), [], value).expect("failed to send value");
+            Event::Withdrew(value)
+        }
+        Action::ValueAvailable => Event::ValueAvailable(gstd::exec::value_available()),
     };
     gstd::msg::reply(event, 0).expect("failed to reply");
 }

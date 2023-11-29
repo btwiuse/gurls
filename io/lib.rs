@@ -36,6 +36,8 @@ impl Contract {
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Action {
+    ValueAvailable,
+    Withdraw,
     Deposit,
     SendValue { to: ActorId, value: u128 },
     SendValueTwice { to: ActorId, value: u128 },
@@ -44,6 +46,8 @@ pub enum Action {
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Event {
+    ValueAvailable(u128),
+    Withdrew(u128),
     Deposited(u128),
     Added { code: String, url: String },
     Log(String),
