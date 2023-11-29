@@ -36,6 +36,7 @@ impl Contract {
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Action {
+    Deposit,
     SendValue { to: ActorId, value: u128 },
     SendValueTwice { to: ActorId, value: u128 },
     AddUrl { code: String, url: String },
@@ -43,6 +44,7 @@ pub enum Action {
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Event {
+    Deposited(u128),
     Added { code: String, url: String },
     Log(String),
     SentValue { to: ActorId, value: u128 },
@@ -58,6 +60,7 @@ pub enum Query {
     BlockTimestamp,
     ProgramId,
     MessageId,
+    // ExistentialDeposit,
 }
 
 #[derive(Encode, Decode, TypeInfo)]
@@ -69,4 +72,5 @@ pub enum Reply {
     BlockTimestamp(u64),
     ProgramId(ActorId),
     MessageId(MessageId),
+    // ExistentialDeposit(u128),
 }

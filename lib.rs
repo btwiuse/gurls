@@ -45,6 +45,10 @@ extern "C" fn handle() {
             .expect("failed to send value 2");
             Event::SentValueTwice { to, value }
         }
+        Action::Deposit => {
+            let value = gstd::msg::value();
+            Event::Deposited(value)
+        }
     };
     gstd::msg::reply(event, 0).expect("failed to reply");
 }
@@ -66,6 +70,7 @@ extern "C" fn state() {
         Query::BlockTimestamp => Reply::BlockTimestamp(gstd::exec::block_timestamp()),
         Query::ProgramId => Reply::ProgramId(gstd::exec::program_id()),
         Query::MessageId => Reply::MessageId(gstd::msg::id()), // all zero id
+                                                               // Query::ExistentialDeposit => Reply::ExistentialDeposit(gstd::exec::env_vars().existential_deposit),
     };
     gstd::msg::reply(reply, 0).expect("Failed to share state");
 }

@@ -9,6 +9,7 @@ path = "lib.rs"
 
 [dependencies]
 gstd = { workspace = true }
+gear-core = { workspace = true }
 gmeta = { workspace = true }
 scale-info = { workspace = true }
 parity-scale-codec = { workspace = true }
