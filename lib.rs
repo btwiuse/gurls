@@ -18,18 +18,19 @@ extern "C" fn handle() {
     type Handle = <Contract as gmeta::Metadata>::Handle;
     type Action = <Handle as gmeta::Types>::Input;
     type EventResult = <Handle as gmeta::Types>::Output;
+    use io::Error;
     use io::Event;
 
     let state: &mut Contract = unsafe { STATE.as_mut().expect("failed to get state as mut") };
     let action: Action = gstd::msg::load().expect("failed to load action");
-    let event: Event = match action {
+    let result: EventResult = match action {
         Action::AddUrl { code, url } => {
             state.add_url(code.clone(), url.clone());
-            Event::Added { code, url }
+            Ok(Event::Added { code, url })
         }
         Action::SendValue { to, value } => {
             gstd::msg::send_bytes(to, [], value).expect("failed to send value");
-            Event::SentValue { to, value }
+            Ok(Event::SentValue { to, value })
         }
         Action::SendValueTwice { to, value } => {
             gstd::msg::send(
@@ -44,20 +45,23 @@ extern "C" fn handle() {
                 value,
             )
             .expect("failed to send value 2");
-            Event::SentValueTwice { to, value }
+            Ok(Event::SentValueTwice { to, value })
         }
         Action::Deposit => {
             let value = gstd::msg::value();
-            Event::Deposited(value)
+            Ok(Event::Deposited(value))
         }
-        Action::Withdraw => {
+        Action::WithdrawAll => {
             let value = gstd::exec::value_available();
             gstd::msg::send_bytes(gstd::msg::source(), [], value).expect("failed to send value");
-            Event::Withdrew(value)
+            Ok(Event::Withdrew(value))
         }
-        Action::ValueAvailable => Event::ValueAvailable(gstd::exec::value_available()),
+        Action::Withdraw(value) => gstd::msg::send_bytes(gstd::msg::source(), [], value)
+            .map(|_| Ok(Event::Withdrew(value)))
+            .unwrap_or_else(|_| Err(Error::WithdrawFailed)),
+        Action::ValueAvailable => Ok(Event::ValueAvailable(gstd::exec::value_available())),
     };
-    gstd::msg::reply(EventResult::Ok(event), 0).expect("failed to reply");
+    gstd::msg::reply(result, 0).expect("failed to reply");
 }
 
 #[no_mangle]

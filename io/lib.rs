@@ -8,12 +8,14 @@ use gstd::MessageId;
 
 impl Metadata for Contract {
     type Init = ();
-    type Handle = InOut<Action, Result<Event, ()>>;
+    type Handle = InOut<Action, EventResult>;
     type Others = ();
     type Reply = ();
     type Signal = ();
     type State = InOut<Query, Reply>;
 }
+
+type EventResult = Result<Event, Error>;
 
 #[derive(Clone, Default, Encode, Decode, TypeInfo)]
 pub struct Contract(pub BTreeMap<String, String>);
@@ -37,11 +39,20 @@ impl Contract {
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
 pub enum Action {
     ValueAvailable,
-    Withdraw,
+    WithdrawAll,
+    Withdraw(u128),
     Deposit,
     SendValue { to: ActorId, value: u128 },
     SendValueTwice { to: ActorId, value: u128 },
     AddUrl { code: String, url: String },
+}
+
+#[derive(Debug, Clone, Encode, Decode, TypeInfo)]
+pub enum Error {
+    CodeExists,
+    CodeNotFound,
+    ValueNotAvailable,
+    WithdrawFailed,
 }
 
 #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
