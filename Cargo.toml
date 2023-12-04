@@ -3,6 +3,7 @@ name = "gurls"
 version = "0.0.1"
 edition = "2021"
 description = "Gear URL Shortener (GURLS)"
+include = ["**/*.rs"]
 license = "MIT"
 
 [lib]
@@ -26,10 +27,16 @@ members = [
 ]
 
 [workspace.dependencies]
-io = { path = "io" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gear-core = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+io = { package = "gurls-io", path = "io", version = "0" }
+# gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+# gear-core = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+# gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+# gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+
+gstd = { version = "1.0.2-354d660.10" }
+gear-core = { version = "1.0.2-pre.15" }
+gmeta = { version = "1.0.2-pre.15" }
+gear-wasm-builder = { version = "1.0.2-354d660.10" }
+
 scale-info = { version = "2", default-features = false }
 parity-scale-codec = { version = "3", default-features = false }
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
