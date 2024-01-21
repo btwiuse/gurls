@@ -27,9 +27,9 @@ members = [
 
 [workspace.dependencies]
 io = { path = "io" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gear-core = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
+gstd = { version = "1" }
+gmeta = { version = "1" }
+gear-core = { version = "1" }
+gear-wasm-builder = { version = "1" }
 scale-info = { version = "2", default-features = false }
 parity-scale-codec = { version = "3", default-features = false }
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "master" }
