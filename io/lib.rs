@@ -41,6 +41,9 @@ pub enum Action {
     Deposit,
     SendValue { to: ActorId, value: u128 },
     SendValueTwice { to: ActorId, value: u128 },
+    SendValueWithGasLimit { to: ActorId, gas_limit: u64, value: u128 },
+    SendBytes { to: ActorId, bytes: Vec<u8> },
+    SendBytesWithGasLimit { to: ActorId, gas_limit: u64, bytes: Vec<u8> },
     AddUrl { code: String, url: String },
 }
 
@@ -52,6 +55,7 @@ pub enum Event {
     Added { code: String, url: String },
     Log(String),
     SentValue { to: ActorId, value: u128 },
+    SentBytes { to: ActorId, bytes: Vec<u8> },
     SentValueTwice { to: ActorId, value: u128 },
 }
 

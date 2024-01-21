@@ -30,6 +30,18 @@ extern "C" fn handle() {
             gstd::msg::send_bytes(to, [], value).expect("failed to send value");
             Event::SentValue { to, value }
         }
+        Action::SendValueWithGasLimit { to, gas_limit, value } => {
+            gstd::msg::send_bytes_with_gas(to, [], gas_limit, value).expect("failed to send value");
+            Event::SentValue { to, value }
+        }
+        Action::SendBytes { to, bytes } => {
+            gstd::msg::send_bytes(to, bytes.clone(), 0).expect("failed to send value");
+            Event::SentBytes { to, bytes }
+        }
+        Action::SendBytesWithGasLimit { to, gas_limit, bytes } => {
+            gstd::msg::send_bytes_with_gas(to, bytes.clone(), gas_limit, 0).expect("failed to send value");
+            Event::SentBytes { to, bytes }
+        }
         Action::SendValueTwice { to, value } => {
             gstd::msg::send(
                 gstd::exec::program_id(),
